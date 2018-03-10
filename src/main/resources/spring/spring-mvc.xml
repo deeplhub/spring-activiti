@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<mvc:annotation-driven />
+	<!-- aspectj aop启用CGliB代理 -->
+	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" />
+	<context:component-scan base-package="com.xh.activiti.controller;com.xh.activiti.commons.activiti" />
+
+	<mvc:annotation-driven />
+
+	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
+	<!-- <mvc:default-servlet-handler /> -->
+	<!-- 配置哪些是静态资源，缺省Servlet 直接返回 -->
+	<mvc:resources mapping="/activiti/**" location="/activiti/" />
+
+	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 order=1 如果freekmarker 没有匹配的界面则按通用视图 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/webpage/" />
+		<property name="suffix" value=".jsp" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="order" value="1" />
+	</bean>
+
+</beans>
