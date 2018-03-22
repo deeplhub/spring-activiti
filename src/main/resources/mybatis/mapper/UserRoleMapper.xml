@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.activiti.dao.IUserRoleDao">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, user_id, role_id
+	</sql>
+	
+	<!-- 根据用户ID查询当前用户下的角色信息 -->
+	<select id="selectByUserId" parameterType="long" resultType="userRole">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM
+			user_role
+		WHERE
+			user_id = #{userId}
+	</select>
+
+	<!-- 根据用户ID查询当前用户下的角色ID -->
+	<select id="selectRoleIdListByUserId" parameterType="long" resultType="long">
+		SELECT
+			role_id
+		FROM
+			user_role
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<!-- 根据用户ID删除用户与角色中间表 -->
+	<delete id="deleteByUserId" parameterType="long">
+		DELETE FROM 
+			user_role 
+		WHERE 
+			user_id = #{userId}
+	</delete>
+	
+	<!-- 根据角色ID删除用户与角色中间表 -->
+	<delete id="deleteByRoleId" parameterType="long">
+		DELETE FROM 
+			user_role 
+		WHERE 
+			role_id = #{roleId}
+	</delete>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.activiti.dao.IUserDao">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, 
+		login_name, 
+		name, 
+		password, 
+		salt, 
+		sex, 
+		age, 
+		phone, 
+		user_type, 
+		status,
+		organization_id, 
+		create_time
+	</sql>
+	
+	<select id="selectUserById" parameterType="long" resultType="user">
+        SELECT
+	        u.id,
+	        u.login_name AS loginName,
+	        u.`name`,
+	        u.`password`,
+	        u.sex,
+	        u.age,
+	        u.user_type AS createTime,
+	        u.phone,
+	        u.organization_id AS organizationId,
+	        u.`status`,
+	        u.create_time,
+	        o.`name` AS organizationName,
+	        r.id AS roleId,
+	        r.`name` AS roleName
+        FROM
+        	user u
+        LEFT JOIN user_role ur ON t.id = ur.user_id
+        LEFT JOIN role r ON ur.role_id = r.id
+        LEFT JOIN organization o ON o.id = u.organization_id
+        <where>
+            u.id = #{id}
+        </where>
+    </select>
+    
+
+	<select id="selectUserPage" resultType="user">
+		SELECT
+			u.id,									<!-- -->
+			u.login_name AS loginName,				<!-- -->
+			u.`name`,								<!-- -->
+			u.phone,								<!-- -->
+			u.sex,									<!-- -->
+			u.age,									<!-- -->
+			u.create_time AS createTime,			<!-- -->
+			u.user_type AS userType,				<!-- -->
+			u.`status`,								<!-- -->
+			u.organization_id AS organizationId,	<!-- -->
+			o.`name` AS organizationName,			<!-- -->
+			GROUP_CONCAT(r.`name`) AS roleName		<!-- -->
+		FROM user u
+		LEFT JOIN user_role ur ON ur.user_id = u.id
+		LEFT JOIN role r ON r.id = ur.role_id
+		LEFT JOIN organization o ON o.id = u.organization_id
+		<where>
+			<if test=" name != null and name != '' ">
+				u.name = #{name}
+			</if>
+			<if test=" organizationId != null ">
+				u.organization_id = #{organizationId}
+			</if>
+			<if test=" startTime != null ">
+                <![CDATA[ and u.create_time >= #{startTime} ]]>
+			</if>
+			<if test=" endTime != null ">
+                <![CDATA[ and u.create_time <= #{endTime} ]]>
+			</if>
+		</where>
+		GROUP BY u.id
+	</select>
+
+
+	<select id="selectCount" resultType="int">
+		SELECT 
+			count(*)
+		FROM 
+			user 
+		WHERE 
+			organization_id IN
+			<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	</select>
+</mapper>

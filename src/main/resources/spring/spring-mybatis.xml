@@ -8,7 +8,8 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+	<!-- 1、配置数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 		<!-- 基本属性 url、user、password -->
 		<property name="url" value="${db.master.url}" />
 		<property name="username" value="${db.master.user}" />
@@ -37,11 +38,60 @@
 		<property name="logAbandoned" value="true" />
 	</bean>
 
-	<!-- 配置 Annotation 驱动，扫描@Transactional注解的类定义事务 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
+	<!-- 2、Spring整合Mybatis 必须配置的项 1 、配置 SqlSessionFactory 实例 -->
+	<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+		<!-- 注入数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 自动扫描Mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath:mybatis/mapper/*.xml"></property>
+		<!-- 扫描 entity 包，这样在 mapper 中就可以使用简单类名，多个用 ; 隔开 -->
+		<property name="typeAliasesPackage" value="com.xh.activiti.model"></property>
+		<!-- 配置 MyBatis 全局配置文件(可省略) -->
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+		<!-- 插件配置，例如：分页插件(可省略) -->
+		<property name="plugins">
+			<array>
+				<!-- 分页插件配置 -->
+				<bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor" />
+				<!-- 性能拦截器，兼打印sql，不建议生产环境配置 -->
+				<bean id="performanceInterceptor" class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor" />
+			</array>
+		</property>
+	    <!-- 全局配置注入 -->
+	    <property name="globalConfig" ref="globalConfig" />
+	</bean>
+	
+	<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+	    <property name="idType" value="0" />
 	</bean>
 
+	<!-- 3、MyBatis动态实现, 扫描DAO层,必须配置的项 2，可以不配置 id -->
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定要被扫描的 Dao接口 -->
+		<property name="basePackage" value="com.xh.activiti.dao"></property>
+	</bean>
+
+	<!-- 4、事务管理 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 5、事务注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+	<!-- 6、事务管理 属性 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="select*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 7、配置切面 -->
+	<aop:config expose-proxy="true" proxy-target-class="true">
+		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.xh.activiti.service..*.*(..))" />
+	</aop:config>
 </beans>

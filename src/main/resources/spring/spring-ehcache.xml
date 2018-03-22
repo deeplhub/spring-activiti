@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+
+	<!-- 1、Shiro提供的Ehcache实现的缓存管理器 -->
+	<!-- 配置 shiro 的 ehcache 缓存相关,这个缓存只和 Realm 相关 -->
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="ehCacheManagerFactoryBean" />
+	</bean>
+
+
+	<!-- 2、Spring提供的Ehcache实现的缓存管理器 -->
+	<!-- 配置 Spring 的 EhCacheManagerFactoryBean -->
+	<!-- 如果有多个cacheManagerFactoryBean要在bean加上p:shared="true" -->
+	<bean id="ehCacheManagerFactoryBean" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:cache/ehcache.xml" />
+		<property name="shared" value="true" />
+	</bean>
+
+	<!-- spring 封装ehcache缓存管理器 -->
+	<bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehCacheManagerFactoryBean" />
+	</bean>
+
+	<!-- 激活spring 缓存注解 -->
+	<cache:annotation-driven cache-manager="springCacheManager" />
+</beans>
