@@ -5,17 +5,18 @@
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
 		id, 
-		login_name, 
+		login_name AS loginName, 
 		name, 
 		password, 
 		salt, 
 		sex, 
 		age, 
 		phone, 
-		user_type, 
+		user_type AS userType, 
 		status,
-		organization_id, 
-		create_time
+		organization_id AS organizationId, 
+		is_admin AS isAdmin
+		create_time AS createTime
 	</sql>
 	
 	<select id="selectUserById" parameterType="long" resultType="user">

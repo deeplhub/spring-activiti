@@ -50,6 +50,7 @@
 		var row = $('#treeGrid').datagrid('getSelected');
 		if(row){
 			if(flag){
+				//更新
 				$("#childTitle").removeClass("ftitle");
 				$("#childTitle").html("");
 				$("#pid").val();
@@ -59,17 +60,28 @@
 				$("#keyId").val(row.id);
 				
 				baseUrl = "/admin/resource/edit";
-			}else{
-				$("#childTitle").addClass("ftitle");
-				$("#childTitle").html(row.name);
-				$("#pid").val(row.id);
-				
-				$('#editDialog').dialog('open').dialog('setTitle', '添加');
-				$('#formId').form('clear');
-				
-				baseUrl = "/admin/resource/add";
+				return true;
 			}
+			//添加子级
+			$('#formId').form('clear');
+			$("#childTitle").addClass("ftitle");
+			$("#childTitle").html(row.name);
+			$("#pid").val(row.id);
+			
+			$('#editDialog').dialog('open').dialog('setTitle', '添加');
+			
+			baseUrl = "/admin/resource/add";
+			return true;
 		}
+		//添加
+		$("#childTitle").addClass("ftitle");
+		$("#childTitle").html();
+		$("#pid").val();
+		
+		$('#editDialog').dialog('open').dialog('setTitle', '添加');
+		$('#formId').form('clear');
+		
+		baseUrl = "/admin/resource/add";
 	}
 	
 	
@@ -123,11 +135,11 @@
 			</div>
 			<div class="fitem">
 				<label>资源路径：</label>
-				<input name="url" class="easyui-validatebox" required="true">
+				<input name="url" class="easyui-validatebox">
 			</div>
 			<div class="fitem">
 				<label>资源介绍：</label>
-				<input name="description">
+				<input name="description" required="true">
 			</div>
 			<div class="fitem">
 				<label>打开方式：</label>

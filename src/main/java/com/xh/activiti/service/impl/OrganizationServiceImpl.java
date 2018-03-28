@@ -149,7 +149,11 @@ public class OrganizationServiceImpl extends ServiceImpl<IOrganizationDao, Organ
 		if(count > 0) {
 			Assert.isNull(null, "删除失败，当前部门下有 [" + count + "] 个用户！");
 		}
-		return super.deleteById(paramId);
+		
+		if(organizationDao.deleteBatchIds(list) > 0) {
+			return true;
+		}
+		return false;
 	}
 	
 	

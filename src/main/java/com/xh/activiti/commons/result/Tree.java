@@ -11,6 +11,7 @@ public class Tree {
 
 	private Long id;
 	private String name;
+	private String text;
 	// open,closed
 	private String state = "open";
 	private boolean checked = false;
@@ -35,6 +36,14 @@ public class Tree {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public String getState() {

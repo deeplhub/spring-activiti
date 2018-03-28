@@ -1,9 +1,7 @@
 package com.xh.activiti.controller;
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +61,22 @@ public class RoleController extends BaseController {
 		roleService.selectDataGrid(pageInfo);
 		return pageInfo;
 	}
+	
+    /**
+     * <p>Title: 角色权限树</p>
+     * <p>Description: 查询所有角色，并根据用户ID对已授权的角色做上标识</p>
+     * 
+     * @author H.Yang
+     * @date 2018年3月23日
+     * 
+     * @return
+     */
+    @PostMapping("/selectAuthorized")
+    @ResponseBody
+    public Object selectAuthorized(Long paramId) {
+    	Assert.isNull(paramId, "主键不能为空");
+        return roleService.selectRoleListByUserIdTree(paramId);
+    }
 
 	/**
 	 * <p>Title: 添加角色</p>
@@ -123,32 +137,46 @@ public class RoleController extends BaseController {
 	}
 
 	/**
-	 * 授权页面
-	 *
-	 * @param id
-	 * @param model
-	 * @return
-	 */
-	@GetMapping("/grantPage")
-	public String grantPage(Model model, Long id) {
-		model.addAttribute("id", id);
-		return "admin/role/roleGrant";
-	}
-
-	/**
-	 * 授权
-	 *
-	 * @param id
+	 * <p>Title: 角色与菜单之间授权</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月23日
+	 * 
+	 * @param paramId
 	 * @param resourceIds
 	 * @return
 	 */
-	@RequiresRoles("admin")
-	@RequestMapping("/updateAuthorized")
+//	@RequiresRoles("admin")
+	@RequestMapping("/updateRoleResourceAuthorized")
 	@ResponseBody
-	public Object updateAuthorized(Long paramId, String resourceIds) {
+	public Object updateRoleResourceAuthorized(Long paramId, String resourceIds) {
 		Assert.isNull(paramId, "主键不能为空");
 		Assert.isNull(resourceIds, "资源不能为空");
-		if (roleService.updateAuthorized(paramId, resourceIds)) {
+		if (roleService.updateRoleResourceAuthorized(paramId, resourceIds)) {
+			return renderSuccess();
+		}
+		return renderError("授权失败！");
+	}
+	
+	/**
+	 * <p>Title: 角色与菜单之间授权</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月23日
+	 * 
+	 * @param paramId
+	 * @param resourceIds
+	 * @return
+	 */
+//	@RequiresRoles("admin")
+	@RequestMapping("/updateUserRoleAuthorized")
+	@ResponseBody
+	public Object updateUserRoleAuthorized(Long paramId, String roleIds) {
+		Assert.isNull(paramId, "主键不能为空");
+		Assert.isNull(roleIds, "角色不能为空");
+		if (roleService.updateUserRoleAuthorized(paramId, roleIds)) {
 			return renderSuccess();
 		}
 		return renderError("授权失败！");

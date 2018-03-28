@@ -15,7 +15,8 @@
 	<!-- aspectj aop启用CGliB代理 -->
 	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" />
 	<!-- 使用Annotation自动注册Bean,扫描@Controller和@ControllerAdvice -->
-	<context:component-scan base-package="com.xh.activiti.controller,com.xh.activiti.commons.scan,com.xh.activiti.commons.exception"
+	<context:component-scan
+		base-package="com.xh.activiti.controller,com.xh.activiti.commons.scan,com.xh.activiti.commons.exception,com.xh.activiti.commons.activiti"
 		use-default-filters="false">
 		<!-- base-package 如果多个，用“,”分隔 -->
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
@@ -36,6 +37,7 @@
 			<mvc:exclude-mapping path="/commons/**" />
 			<mvc:exclude-mapping path="/static/**" />
 			<mvc:exclude-mapping path="/login" />
+			<mvc:exclude-mapping path="/logout" />
 			<bean class="com.xh.activiti.commons.interceptor.LoginHandlerInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

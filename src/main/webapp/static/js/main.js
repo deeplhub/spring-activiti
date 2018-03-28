@@ -65,21 +65,6 @@ function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
 }
 //zTree end
 
-
-//login out start
-function loginOut() {
-	$.messager.confirm('提示', '确定要退出?', function (r) {
-		if (r) {
-			$.post(basePath + '/logout', function (result) {
-				if (result.success) {
-					window.location.href = basePath + '/';
-				}
-			}, 'json');
-		}
-	});
-}
-//login out end
-
 //编辑（添加、修改）
 var baseUrl = null;
 function editGrid(grid, dialog, formId, keyId, url) {

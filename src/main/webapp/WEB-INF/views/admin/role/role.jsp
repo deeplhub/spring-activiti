@@ -6,6 +6,7 @@
 <title>角色</title>
 <%@ include file="/commons/base.jsp"%>
 <link rel="stylesheet" type="text/css" href="${staticPath }/static/css/main.css">
+<link rel="stylesheet" type="text/css" href="${staticPath }/static/zTree/css/demo.css">
 <script type="text/javascript" src="${staticPath }/static/js/main.js"></script>
 <script type="text/javascript">
 	$(function() {
@@ -42,6 +43,9 @@
 		});
 	});
 	
+	function status(value, row, index) {
+		return (value == 0) ? "正常" : "停用";
+	}
 	
 	function successCallback(result){
 		if (result.code == 0) {
@@ -78,7 +82,7 @@
 		nodeId = nodeId.substring(0, nodeId.length - 1);
 		
 		var data = {
-			url:basePath + "/admin/role/updateAuthorized",
+			url:basePath + "/admin/role/updateRoleResourceAuthorized",
 			data:{
 				paramId:$("#roleId").val(),
 				resourceIds:nodeId
@@ -100,7 +104,7 @@
 				<th field="name" width="100">角色名</th>
 				<th field="description" width="200">简介</th>
 				<th field="seq" width="80">排序号</th>
-				<th field="status" width="100">状态</th>
+				<th field="status" formatter="status" width="100">状态</th>
 			</tr>
 		</thead>
 	</table>
@@ -111,7 +115,7 @@
 			onclick="editGrid('#dataGrid', '#editOneDialog', '#formOneId', '#keyId', '/admin/role/edit')">编辑</button>
 		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true"
 			onclick="remove('#dataGrid', '/admin/role/remove')">删除</button>
-		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="authorized()">授权</button>
+		<button class="easyui-linkbutton" iconCls="icon-man" plain="true" onclick="authorized()">授权</button>
 	</div>
 
 	<div id="editOneDialog" class="easyui-dialog hidden-label" style="width: 400px; height: 280px; padding: 10px 20px;"
@@ -121,15 +125,15 @@
 			<input id="keyId" name="id" type="hidden">
 			<div class="fitem">
 				<label>角色名:</label>
-				<input name="name" class="easyui-validatebox">
+				<input name="name" class="easyui-validatebox" required="true">
 			</div>
 			<div class="fitem">
 				<label>状态:</label>
-				<input name="status" class="easyui-validatebox">
+				<input name="status" class="easyui-validatebox" required="true">
 			</div>
 			<div class="fitem">
 				<label>排序:</label>
-				<input name="seq">
+				<input name="seq" class="easyui-validatebox" required="true">
 			</div>
 			<div class="fitem">
 				<label>简介:</label>
@@ -142,13 +146,13 @@
 		<button class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#baseDialog').dialog('close')">取消</button>
 	</div>
 
-	<div id="authorizedDialog" class="easyui-dialog hidden-label" style="width: 400px; height: 280px; padding: 10px 20px"
+	<div id="authorizedDialog" class="easyui-dialog hidden-label" style="width:275px; height: 380px; padding: 10px 20px"
 		closed="true" buttons="#authorizedDialog-buttons">
 		<form id="formTwoId" method="post">
 			<input id="roleId" name="paramId" type="hidden">
 			<div class="fitem">
 				<label>权限：</label>
-				<ul id="authorizedTree" class="ztree"></ul>
+				<ul id="authorizedTree" class="ztree" style="margin-left:16px;height:243px;width:162px;overflow: auto;"></ul>
 			</div>
 		</form>
 	</div>

@@ -39,6 +39,9 @@ public class User {
 	// 所属机构
 	@TableField(value = "organization_id")
 	private Long organizationId;
+	// 是否管理员
+	@TableField(value = "is_admin")
+	private boolean isAdmin;
 	// 创建时间
 	@TableField(value = "create_time")
 	private Date createTime;
@@ -206,6 +209,14 @@ public class User {
 		return organizationId;
 	}
 
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	/**
 	 * 创建时间
 	 */
@@ -256,7 +267,8 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", loginName=" + loginName + ", name=" + name + ", password=" + password + ", salt=" + salt + ", sex="
 				+ sex + ", age=" + age + ", phone=" + phone + ", userType=" + userType + ", status=" + status + ", organizationId="
-				+ organizationId + ", createTime=" + createTime + "]";
+				+ organizationId + ", isAdmin=" + isAdmin + ", createTime=" + createTime + ", organizationName=" + organizationName
+				+ ", roleId=" + roleId + ", roleIds=" + roleIds + ", roleName=" + roleName + "]";
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.xh.activiti.service.impl;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,6 @@ import com.xh.activiti.commons.result.PageInfo;
 import com.xh.activiti.dao.IUserDao;
 import com.xh.activiti.dao.IUserRoleDao;
 import com.xh.activiti.model.User;
-import com.xh.activiti.model.UserRole;
 import com.xh.activiti.service.IUserService;
 
 /**
@@ -74,11 +72,22 @@ public class UserServiceImpl extends ServiceImpl<IUserDao, User> implements IUse
 		}
 		pageInfo.setCondition(condition);
 		page.setRecords(userDao.selectUserPage(page));
-		
+
 		pageInfo.setRows(page.getRecords());
 		pageInfo.setTotal(page.getTotal());
 	}
 
+	/**
+	 * <p>Title: 修改密码</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月23日
+	 * 
+	 * @param userId
+	 * @param md5Hex
+	 * @return
+	 */
 	@Override
 	public boolean updatePwdByUserId(Long userId, String md5Hex) {
 		User user = new User();
@@ -91,57 +100,9 @@ public class UserServiceImpl extends ServiceImpl<IUserDao, User> implements IUse
 	 * 重写父类方法
 	 */
 	@Override
-	public boolean insert(User user) {
-		user.setCreateTime(new Date());
-		boolean flag = super.insert(user);
-
-		Long id = user.getId();
-		String[] roles = user.getRoleIds().split(",");
-
-		UserRole userRole = new UserRole();
-		for (String string : roles) {
-			userRole.setUserId(id);
-			userRole.setRoleId(Long.valueOf(string));
-			userRoleDao.insert(userRole);
-		}
-		return flag;
-	}
-
-	/**
-	 * 重写父类方法
-	 */
-	@Override
 	public boolean deleteById(Serializable id) {
 		Long uid = Long.valueOf(id.toString());
 		userRoleDao.deleteByUserId(uid);
 		return super.deleteById(id);
-	}
-
-	/**
-	 * 重写父类方法
-	 */
-	@Override
-	public boolean updateById(User user) {
-		if (StringUtils.isBlank(user.getPassword())) {
-			user.setPassword(null);
-		}
-		boolean flag = super.updateById(user);
-
-		Long id = user.getId();
-		List<UserRole> userRoles = userRoleDao.selectByUserId(id);
-		if (userRoles != null && !userRoles.isEmpty()) {
-			for (UserRole userRole : userRoles) {
-				userRoleDao.deleteById(userRole.getId());
-			}
-		}
-
-		String[] roles = user.getRoleIds().split(",");
-		UserRole userRole = new UserRole();
-		for (String string : roles) {
-			userRole.setUserId(id);
-			userRole.setRoleId(Long.valueOf(string));
-			userRoleDao.insert(userRole);
-		}
-		return flag;
 	}
 }

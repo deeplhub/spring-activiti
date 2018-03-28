@@ -144,8 +144,8 @@ public class ResourceController extends BaseController {
 	}
 
 	/**
-	 * <p>Title: 角色-根据角色ID查询授权菜单</p>
-	 * <p>Description: </p>
+	 * <p>Title: 查询所有菜单，并根据角色ID对已授权的菜单做上标识</p>
+	 * <p>Description: 角色授权时用</p>
 	 * 
 	 * @author H.Yang
 	 * @date 2018年3月20日

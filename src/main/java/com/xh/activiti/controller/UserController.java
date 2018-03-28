@@ -1,8 +1,8 @@
 package com.xh.activiti.controller;
 
+import java.util.Date;
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,7 +75,6 @@ public class UserController extends BaseController {
 	@PostMapping("/add")
 	@ResponseBody
 	public Object add(User user) {
-		Assert.isNull(user, "参数不能为空");
 		List<User> list = userService.selectByLoginName(user);
 		if (list != null && !list.isEmpty()) {
 			return renderError("登录名已存在!");
@@ -84,6 +83,7 @@ public class UserController extends BaseController {
 		String pwd = passwordHash.toHex(user.getPassword(), salt);
 		user.setSalt(salt);
 		user.setPassword(pwd);
+		user.setCreateTime(new Date());
 		if (userService.insert(user)) {
 			return renderSuccess("添加成功");
 		}
@@ -96,20 +96,25 @@ public class UserController extends BaseController {
 	 * @param user
 	 * @return
 	 */
-	@RequiresRoles("admin")
+//	@RequiresRoles("admin")
 	@PostMapping("/edit")
 	@ResponseBody
 	public Object edit(User user) {
-		Assert.isNull(user, "参数不能为空");
+		Assert.isNull(user.getLoginName(), "参数不能为空");
 		List<User> list = userService.selectByLoginName(user);
 		if (list != null && !list.isEmpty()) {
 			return renderError("登录名已存在!");
 		}
 		// 更新密码
-		if (StringUtils.isNotBlank(user.getPassword())) {
+		if (StringUtils.isBlank(user.getPassword())) {
 			user = userService.selectById(user.getId());
 			String salt = user.getSalt();
 			String pwd = passwordHash.toHex(user.getPassword(), salt);
+			user.setPassword(pwd);
+		}else {
+			String salt = StringUtils.getUUId();
+			String pwd = passwordHash.toHex(user.getPassword(), salt);
+			user.setSalt(salt);
 			user.setPassword(pwd);
 		}
 		if (userService.updateById(user)) {
@@ -147,10 +152,10 @@ public class UserController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequiresRoles("admin")
-	@PostMapping("/delete")
+//	@RequiresRoles("admin")
+	@PostMapping("/remove")
 	@ResponseBody
-	public Object delete(Long paramId) {
+	public Object remove(Long paramId) {
 		Assert.isNull(paramId, "主键不能为空");
 		Long currentUserId = getUserId();
 		if (paramId == currentUserId) {

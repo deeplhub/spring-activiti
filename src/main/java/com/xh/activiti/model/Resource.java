@@ -47,7 +47,7 @@ public class Resource {
 	private List<Resource> children;
 	// 展开或折叠状态
 	@TableField(exist = false)
-	private String state;
+	private String state = "closed";
 
 	/**
 	 * 主键

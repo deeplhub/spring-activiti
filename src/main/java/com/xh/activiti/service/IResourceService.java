@@ -53,7 +53,7 @@ public interface IResourceService extends IService<Resource> {
 	boolean deleteBatchIds(Long paramId);
 
 	/**
-	 * <p>Title: 根据角色ID查询所有资源管理菜单</p>
+	 * <p>Title: 查询所有菜单，并根据角色ID对已授权的菜单做上标识</p>
 	 * <p>Description: 角色授权时用</p>
 	 * 
 	 * @author H.Yang

@@ -147,7 +147,7 @@ public class ResourceServiceImpl extends ServiceImpl<IResourceDao, Resource> imp
 	}
 
 	/**
-	 * <p>Title: 根据角色ID查询所有资源管理菜单</p>
+	 * <p>Title: 查询所有菜单，并根据角色ID对已授权的菜单做上标识</p>
 	 * <p>Description: 角色授权时用</p>
 	 * 
 	 * @author H.Yang
@@ -196,7 +196,7 @@ public class ResourceServiceImpl extends ServiceImpl<IResourceDao, Resource> imp
 	}
 
 	/**
-	 * <p>Title: 使用递归方法建树 </p>
+	 * <p>Title: 使用递归方法建树 （默认State=closed,关闭状态）</p>
 	 * <p>Description: 递归比两层循环机快很多倍</p>
 	 * 
 	 * @author H.Yang
@@ -209,6 +209,7 @@ public class ResourceServiceImpl extends ServiceImpl<IResourceDao, Resource> imp
 		List<Resource> trees = new ArrayList<Resource>();
 		for (Resource treeNode : treeNodes) {
 			if (treeNode.getPid() == null) {
+				treeNode.setState("open");
 				trees.add(findChildren(treeNode, treeNodes));
 			}
 		}
@@ -232,12 +233,14 @@ public class ResourceServiceImpl extends ServiceImpl<IResourceDao, Resource> imp
 				if (treeNode.getChildren() == null) {
 					treeNode.setChildren(new ArrayList<Resource>());
 				}
+				//关闭第子级菜单
 				it.setState("closed");
-				// 按钮关闭
-				if (it.getResourceType() == 1) {
+				treeNode.getChildren().add(findChildren(it, treeNodes));
+			} else {
+				//打开没有下级的菜单
+				if (it.getChildren() == null) {
 					it.setState("open");
 				}
-				treeNode.getChildren().add(findChildren(it, treeNodes));
 			}
 		}
 		return treeNode;

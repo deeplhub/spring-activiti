@@ -16,6 +16,16 @@
 	$(function() {
 		$.fn.zTree.init($("#treeDemo"), setting);
 	});
+	
+	function loginOut() {
+		$.messager.confirm('提示', '确定要退出?', function (r) {
+			if (r) {
+				$.post(basePath + '/logout', function(result){
+					window.location.href = basePath + '/';
+				}, "json");
+			}
+		});
+	}
 </script>
 </head>
 

@@ -11,9 +11,6 @@
 .window {
 	overflow: visible;
 }
-.tree-node {
-    padding: 0;
-}
 </style>
 <script type="text/javascript" src="${staticPath }/static/js/jquery.time.js"></script>
 <script type="text/javascript" src="${staticPath }/static/js/main.js"></script>
@@ -138,11 +135,10 @@
 			$('#authorizedDialog').dialog('open').dialog('setTitle', '授权');
 			setting.async.url = basePath + '/admin/role/selectAuthorized?paramId='+row.id;
 			setting.check.enable = true;
-			setting.check.chkStyle = "checkbox";
 			setting.callback = {};
 			$.fn.zTree.init($("#authorizedTree"), setting);
 			
-			$("#userId").val(row.id);
+			$("#roleId").val(row.id);
 		}
 	}
 	
@@ -154,11 +150,12 @@
 			nodeId += nodeId = nodes[i].id + ",";
 		}
 		nodeId = nodeId.substring(0, nodeId.length - 1);
+		
 		var data = {
 			url:basePath + "/admin/role/updateUserRoleAuthorized",
 			data:{
-				paramId:$("#userId").val(),
-				roleIds:nodeId
+				paramId:$("#roleId").val(),
+				resourceIds:nodeId
 			},
 			returnType:"json"
 		};
@@ -249,7 +246,7 @@
 	<div id="authorizedDialog" class="easyui-dialog hidden-label" style="width:275px; height: 380px; padding: 10px 20px"
 		closed="true" buttons="#authorizedDialog-buttons">
 		<form id="formTwoId" method="post">
-			<input id="userId" name="paramId" type="hidden">
+			<input id="roleId" name="paramId" type="hidden">
 			<div class="fitem">
 				<label>权限：</label>
 				<ul id="authorizedTree" class="ztree" style="margin-left:16px;height:243px;width:162px;overflow: auto;"></ul>

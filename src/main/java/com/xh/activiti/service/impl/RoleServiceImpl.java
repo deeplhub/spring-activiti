@@ -1,5 +1,6 @@
 package com.xh.activiti.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,12 +15,14 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.xh.activiti.commons.result.PageInfo;
+import com.xh.activiti.commons.result.Tree;
 import com.xh.activiti.dao.IRoleDao;
 import com.xh.activiti.dao.IRoleResourceDao;
 import com.xh.activiti.dao.IUserRoleDao;
 import com.xh.activiti.model.Resource;
 import com.xh.activiti.model.Role;
 import com.xh.activiti.model.RoleResource;
+import com.xh.activiti.model.UserRole;
 import com.xh.activiti.service.IRoleService;
 
 /**
@@ -110,9 +113,9 @@ public class RoleServiceImpl extends ServiceImpl<IRoleDao, Role> implements IRol
 	 */
 	@Override
 	public boolean deleteBatchIds(Long paramId) {
-		//默认管理员角色不能删除
+		// 默认管理员角色不能删除
 		Role role = roleDao.selectById(paramId);
-		if(role.getName().equals("admin")) {
+		if (role != null && role.getName().equals("admin")) {
 			return false;
 		}
 		// 删除用户与角色中间表
@@ -122,7 +125,7 @@ public class RoleServiceImpl extends ServiceImpl<IRoleDao, Role> implements IRol
 		// 角色
 		return super.deleteById(paramId);
 	}
-	
+
 	/**
 	 * <p>Title: 角色与菜单的授权</p>
 	 * <p>Description: 授权时先删除当前角色已有的授权信息，再保存</p>
@@ -134,7 +137,7 @@ public class RoleServiceImpl extends ServiceImpl<IRoleDao, Role> implements IRol
 	 * @param resourceIds
 	 */
 	@Override
-	public boolean updateAuthorized(Long roleId, String resourceIds) {
+	public boolean updateRoleResourceAuthorized(Long roleId, String resourceIds) {
 		// 先删除后添加,有点爆力
 		RoleResource roleResource = new RoleResource();
 		roleResource.setRoleId(roleId);
@@ -148,5 +151,64 @@ public class RoleServiceImpl extends ServiceImpl<IRoleDao, Role> implements IRol
 			roleResourceDao.insert(roleResource);
 		}
 		return true;
+	}
+
+	/**
+	 * <p>Title: 用户与角色的授权</p>
+	 * <p>Description: 授权时先删除当前角色已有的授权信息，再保存</p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月23日
+	 * 
+	 * @param paramId
+	 * @param roleIds
+	 * @return
+	 */
+	@Override
+	public boolean updateUserRoleAuthorized(Long userId, String roleIds) {
+		// 先删除后添加,有点爆力
+		UserRole userRole = null;
+		userRoleDao.deleteByUserId(userId);
+
+		String[] roles = roleIds.split(",");
+		for (String string : roles) {
+			userRole = new UserRole();
+			userRole.setUserId(userId);
+			userRole.setRoleId(Long.valueOf(string));
+			userRoleDao.insert(userRole);
+		}
+		return true;
+	}
+
+	/**
+	 * <p>Title: 角色权限树</p>
+	 * <p>Description: 查询所有角色，并根据用户ID对已授权的角色做上标识</p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月23日
+	 * 
+	 * @return
+	 */
+	public List<Tree> selectRoleListByUserIdTree(Long userId) {
+		List<Tree> trees = new ArrayList<Tree>();
+		// 查询所有角色管理
+		List<Role> roles = roleDao.selectList(null);
+
+		// 查询当前用户下的角色列表
+		List<Long> userRoleList = userRoleDao.selectRoleIdListByUserId(userId);
+		Tree tree = null;
+		for (Role role : roles) {
+			tree = new Tree();
+			for (Long userRoleId : userRoleList) {
+				if (role.getId().equals(userRoleId)) {
+					tree.setChecked(true);
+				}
+			}
+			tree.setId(role.getId());
+			tree.setName(role.getName());
+			tree.setText(role.getName());
+			trees.add(tree);
+		}
+		return trees;
 	}
 }

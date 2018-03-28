@@ -70,7 +70,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		Map<String, Set<String>> resourceMap = roleService.selectResourceMapByUserId(user.getId());
 		Set<String> urls = resourceMap.get("urls");
 		Set<String> roles = resourceMap.get("roles");
-		ShiroUser shiroUser = new ShiroUser(user.getId(), user.getLoginName(), user.getName(), urls);
+		ShiroUser shiroUser = new ShiroUser(user.getId(), user.getLoginName(), user.getName(), user.isAdmin(), urls);
 		shiroUser.setRoles(roles);
 		// 认证缓存信息
 		return new SimpleAuthenticationInfo(shiroUser, user.getPassword().toCharArray(), ShiroByteSource.of(user.getSalt()), getName());
