@@ -213,7 +213,11 @@
 			</div>
 			<div class="fitem">
 				<label>性别：</label>
-				<input name="sex" class="easyui-validatebox" required>
+				<!-- <input name="sex" class="easyui-validatebox" required> -->
+				<select class="easyui-combobox" name="sex" panelHeight="auto" style="width:172px;" required>
+					<option value="0">男</option>
+					<option value="1">女</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>年龄：</label>
@@ -225,15 +229,23 @@
 			</div>
 			<div class="fitem">
 				<label>用户类别：</label>
-				<input name="userType" class="easyui-validatebox" required>
+				<!-- <input name="userType" class="easyui-validatebox" required> -->
+				<select class="easyui-combobox" name="userType" panelHeight="auto" style="width:172px;" required>
+					<option value="0">管理员</option>
+					<option value="1">普通用户</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>用户状态：</label>
-				<input name="status" class="easyui-validatebox" required>
+				<!-- <input name="status" class="easyui-validatebox" required> -->
+				<select class="easyui-combobox" name="status" panelHeight="auto" style="width:172px;" required>
+					<option value="0">正常</option>
+					<option value="1">禁用</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>所属机构：</label>
-				<input id="organizationNameId" name="organizationName" class="easyui-validatebox" onclick="showTree();" readonly="readonly" required/>
+				<input id="organizationNameId" name="organizationName" class="easyui-validatebox" onclick="showTree();"  required/>
 				<div id="menuContent" class="menuContent" style="display:none; position:absolute; z-index:9002;">
 					<ul id="organizationTree" class="ztree" style="border: 1px solid #000000; height: 107px;width:162px; margin-left: 84px;margin-top: -1px;overflow: auto;"></ul>
 				</div>

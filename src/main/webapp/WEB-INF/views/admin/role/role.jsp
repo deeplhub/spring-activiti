@@ -129,7 +129,11 @@
 			</div>
 			<div class="fitem">
 				<label>状态:</label>
-				<input name="status" class="easyui-validatebox" required="true">
+				<!-- <input name="status" class="easyui-validatebox" required="true"> -->
+				<select class="easyui-combobox" name="status" panelHeight="auto" style="width:172px;" required="true">
+					<option value="0">正常</option>
+					<option value="1">禁用</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>排序:</label>
@@ -143,7 +147,7 @@
 	</div>
 	<div id="dlg-buttons" class="hidden-label">
 		<button class="easyui-linkbutton" iconCls="icon-ok" onclick="saveAndUpdate('#formOneId')">保存</button>
-		<button class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#baseDialog').dialog('close')">取消</button>
+		<button class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#editOneDialog').dialog('close')">取消</button>
 	</div>
 
 	<div id="authorizedDialog" class="easyui-dialog hidden-label" style="width:275px; height: 380px; padding: 10px 20px"

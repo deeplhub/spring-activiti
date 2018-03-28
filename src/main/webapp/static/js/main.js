@@ -32,6 +32,7 @@ var setting = {
 			successCallback(result);
 		}, data.returnType);
 	}
+	
 }
 
 function filter(treeId, parentNode, childNodes) {
@@ -115,4 +116,6 @@ function remove(grid, url) {
 		});
 	}
 }
+
+
 

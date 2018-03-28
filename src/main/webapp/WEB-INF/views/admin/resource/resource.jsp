@@ -143,19 +143,35 @@
 			</div>
 			<div class="fitem">
 				<label>打开方式：</label>
-				<input name="openMode">
+				<!-- <input id="combobox" name="openMode"> -->
+				<select class="easyui-combobox" name="openMode" panelHeight="auto" style="width:172px;" required="true">
+					<option value="ajax">ajax</option>
+					<option value="iframe">iframe</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>状态：</label>
-				<input name="status">
+				<!-- <input name="status"> -->
+				<select class="easyui-combobox" name="status" panelHeight="auto" style="width:172px;" required="true">
+					<option value="0">正常</option>
+					<option value="1">禁用</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>打开状态：</label>
-				<input name="opened">
+				<!-- <input name="opened"> -->
+				<select class="easyui-combobox" name="opened" panelHeight="auto" style="width:172px;" required="true">
+					<option value="1">打开</option>
+					<option value="0">关闭</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>资源类别：</label>
-				<input name="resourceType">
+				<!-- <input name="resourceType"> -->
+				<select class="easyui-combobox" name="resourceType" panelHeight="auto" style="width:172px;" required="true">
+					<option value="1">按钮</option>
+					<option value="0">菜单</option>
+				</select>
 			</div>
 			<div class="fitem">
 				<label>排序：</label>
@@ -165,7 +181,7 @@
 	</div>
 	<div id="dlg-buttons" class="hidden-label">
 		<button class="easyui-linkbutton" iconCls="icon-ok" onclick="saveAndUpdate('#formId')">保存</button>
-		<button class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</button>
+		<button class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#editDialog').dialog('close')">取消</button>
 	</div>
 </body>
 </html>

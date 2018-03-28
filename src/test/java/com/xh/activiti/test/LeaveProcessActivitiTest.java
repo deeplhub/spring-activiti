@@ -14,7 +14,6 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -70,7 +69,7 @@ public class LeaveProcessActivitiTest {
 	 * @date 2018年3月28日
 	 * 
 	 */
-	// @Test
+//	@Test
 	public void queryDeploymentFlow() {
 		List<Deployment> list = getProcessEngine().getRepositoryService()//
 				.createDeploymentQuery()//
@@ -371,7 +370,7 @@ public class LeaveProcessActivitiTest {
 	 * @date 2018年3月28日
 	 * 
 	 */
-	@Test
+	// @Test
 	public void processState() {
 		// act_hi_procinst表ID
 		String processInstanceId = "35001";

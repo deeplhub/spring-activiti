@@ -133,10 +133,10 @@ public class ResourceController extends BaseController {
 	@ResponseBody
 	public Object edit(Resource resource) {
 		// 选择菜单时将openMode设置为null
-		Integer type = resource.getResourceType();
-		if (null != type && type == 0) {
-			resource.setOpenMode(null);
-		}
+//		Integer type = resource.getResourceType();
+//		if (null != type && type == 0) {
+//			resource.setOpenMode(null);
+//		}
 		if (resourceService.updateById(resource)) {
 			return renderSuccess();
 		}
