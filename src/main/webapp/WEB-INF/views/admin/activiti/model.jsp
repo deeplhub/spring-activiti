@@ -18,7 +18,7 @@
 			iconCls : "icon-edit", //图标
 			loadMsg : "正在加载数据...",
 			method : "post",
-			url : basePath + "/admin/activitimodel/queryModelDataGrid",
+			url : basePath + "/admin/model/queryModelDataGrid",
 			//sortName : 'createTime',
 			//sortOrder : 'desc',
 			nowrap : false,
@@ -40,7 +40,8 @@
 			$("#editOneDialog").dialog('close');
 			$("#dataGrid").datagrid('reload');
 			console.info(result.obj);
-			window.location.href=basePath+"/admin/activitimodel/modeler?modelId="+result.obj;
+			
+			window.location.href=basePath+"/admin/model/openModelView?modelId="+result.obj;
 		} else {
 			$.messager.show({
 				title : 'Error',
@@ -51,7 +52,7 @@
 
 	function createModel() {
 		var data = {
-			url : basePath + "/admin/",
+			url : basePath + "/admin/model/add",
 			data : {
 				name : "常海洋",
 				key : "changhy",
@@ -79,7 +80,7 @@
 	</table>
 	<div id="toolbar" class="hidden-label">
 		<button class="easyui-linkbutton" iconCls="icon-add" plain="true"
-			onclick="editGrid('#dataGrid', '#editDialog', '#formId', '', '/admin/activitimodel/add')">创建模型</button>
+			onclick="editGrid('#dataGrid', '#editDialog', '#formId', '', '/admin/model/add')">创建模型</button>
 	</div>
 
 

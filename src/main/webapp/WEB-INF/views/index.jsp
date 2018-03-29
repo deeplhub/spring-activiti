@@ -11,16 +11,27 @@
 .ztree li a {
 	color: #FFF
 }
+
+ul.ztree {
+	margin-top: auto;
+	border: 0px;
+	background: center;
+	width: auto;
+	height: auto;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+}
 </style>
 <script type="text/javascript">
 	$(function() {
 		$.fn.zTree.init($("#treeDemo"), setting);
 	});
-	
+
 	function loginOut() {
-		$.messager.confirm('提示', '确定要退出?', function (r) {
+		$.messager.confirm('提示', '确定要退出?', function(r) {
 			if (r) {
-				$.post(basePath + '/logout', function(result){
+				$.post(basePath + '/logout', function(result) {
 					window.location.href = basePath + '/';
 				}, "json");
 			}

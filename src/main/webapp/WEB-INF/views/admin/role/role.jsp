@@ -5,9 +5,6 @@
 <head>
 <title>角色</title>
 <%@ include file="/commons/base.jsp"%>
-<link rel="stylesheet" type="text/css" href="${staticPath }/static/css/main.css">
-<link rel="stylesheet" type="text/css" href="${staticPath }/static/zTree/css/demo.css">
-<script type="text/javascript" src="${staticPath }/static/js/main.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$('#dataGrid').datagrid({

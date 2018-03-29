@@ -12,14 +12,21 @@
     http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<mvc:annotation-driven />
+
 	<!-- aspectj aop启用CGliB代理 -->
 	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" />
+
 	<!-- 使用Annotation自动注册Bean,扫描@Controller和@ControllerAdvice -->
 	<context:component-scan
-		base-package="com.xh.activiti.controller,com.xh.activiti.commons.scan,com.xh.activiti.commons.exception,com.xh.activiti.commons.activiti"
+		base-package="com.xh.activiti.controller;
+		com.xh.activiti.commons.activiti;
+		com.xh.activiti.commons.scan;
+		com.xh.activiti.commons.exception"
 		use-default-filters="false">
+
 		<!-- base-package 如果多个，用“,”分隔 -->
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+
 		<!--控制器增强，使一个Contoller成为全局的异常处理类，类中用@ExceptionHandler方法注解的方法可以处理所有Controller发生的异常 -->
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
@@ -27,20 +34,16 @@
 	<!-- 配置哪些是静态资源，缺省Servlet 直接返回 -->
 	<mvc:resources location="/commons/" mapping="/commons/**" />
 	<mvc:resources location="/static/" mapping="/static/**" />
+	<mvc:resources location="/plugins/" mapping="/plugins/**" />
 
-	<!-- 拦截器配置 -->
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<!-- 拦截所有的请求，这个必须写在前面，也就是写在【不拦截】的上面 -->
-			<mvc:mapping path="/**" />
-			<!-- 但是排除下面这些，也就是不拦截请求 -->
-			<mvc:exclude-mapping path="/commons/**" />
-			<mvc:exclude-mapping path="/static/**" />
-			<mvc:exclude-mapping path="/login" />
-			<mvc:exclude-mapping path="/logout" />
-			<bean class="com.xh.activiti.commons.interceptor.LoginHandlerInterceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
+	<!-- 拦截器 - 如果是REST风格的URL，静态资源就不会被拦截，因为我们精准的注入了拦截器。 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<bean class="com.xh.activiti.commons.interceptor.LoginHandlerInterceptor" />
+			</list>
+		</property>
+	</bean>
 
 	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 order=1 如果freekmarker 没有匹配的界面则按通用视图 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -50,15 +53,15 @@
 		<property name="order" value="1" />
 	</bean>
 
-	<mvc:annotation-driven>
-		<mvc:message-converters register-defaults="true">
-			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-				<constructor-arg value="UTF-8" />
-			</bean>
-			<ref bean="fastJsonHttpMessageConverter" />
-		</mvc:message-converters>
-	</mvc:annotation-driven>
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<!-- json转换器 -->
+				<ref bean="fastJsonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
 
 	<!-- 配置Fastjson支持 -->
 	<bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">

@@ -5,8 +5,6 @@
 <head>
 <title>用户</title>
 <%@ include file="/commons/base.jsp"%>
-<link rel="stylesheet" type="text/css" href="${staticPath }/static/css/main.css">
-<link rel="stylesheet" type="text/css" href="${staticPath }/static/zTree/css/demo.css">
 <style type="text/css">
 .window {
 	overflow: visible;
@@ -15,8 +13,6 @@
     padding: 0;
 }
 </style>
-<script type="text/javascript" src="${staticPath }/static/js/jquery.time.js"></script>
-<script type="text/javascript" src="${staticPath }/static/js/main.js"></script>
 <script type="text/javascript">
 	$(function () {
 		$('#dataGrid').datagrid({
