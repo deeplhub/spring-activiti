@@ -5,20 +5,16 @@
 <head>
 <title>流程模列表</title>
 <%@ include file="/commons/base.jsp"%>
-<link rel="stylesheet" type="text/css" href="${staticPath }/static/css/main.css">
-<link rel="stylesheet" type="text/css" href="${staticPath }/static/zTree/css/demo.css">
-<script type="text/javascript" src="${staticPath }/static/js/main.js"></script>
-
 <script type="text/javascript">
 	$(function() {
 		$('#dataGrid').datagrid({
-			title : '角色管理列表',
+			title : '流程模型列表',
 			width : 700, //高度
 			height : 'auto', //宽度自动
 			iconCls : "icon-edit", //图标
 			loadMsg : "正在加载数据...",
 			method : "post",
-			url : basePath + "/admin/model/queryModelDataGrid",
+			url : basePath + "/admin/model/modelList",
 			//sortName : 'createTime',
 			//sortOrder : 'desc',
 			nowrap : false,
@@ -35,13 +31,22 @@
 
 	});
 
+	function formatterDate(value, row, index) {
+		return TimeObjectUtil.longMsTimeConvertToDateTime(value);
+	}
+
 	function successCallback(result) {
 		if (result.code == 0) {
-			$("#editOneDialog").dialog('close');
+			$("#editDialog").dialog('close');
 			$("#dataGrid").datagrid('reload');
-			console.info(result.obj);
+			$.messager.show({
+				title : 'Success',
+				msg : result.msg
+			});
 			
-			window.location.href=basePath+"/admin/model/openModelView?modelId="+result.obj;
+			if (result.obj != null) {
+				window.open(basePath + "/admin/model/openModelView?modelId=" + result.obj);
+			}
 		} else {
 			$.messager.show({
 				title : 'Error',
@@ -50,37 +55,49 @@
 		}
 	}
 
-	function createModel() {
-		var data = {
-			url : basePath + "/admin/model/add",
-			data : {
-				name : "常海洋",
-				key : "changhy",
-				description : "这是一个什么？"
-			},
-			returnType : "json"
-		};
-		setting.post(data);
+	function editModel() {
+		var row = $("#dataGrid").datagrid('getSelected');
+		if (row) {
+			window.open(basePath + "/admin/model/openModelView?modelId=" + row.id);
+		}
+	}
+	
+	function deploy(){
+		var row = $("#dataGrid").datagrid('getSelected');
+		if (row) {
+			var data = {
+					url:basePath + "/admin/model/deploy",
+					data:{
+						paramId: row.id
+					},
+					returnType:"json"
+			};
+			setting.post(data);
+		}
 	}
 </script>
 </head>
 <body>
-	<h1>流程模列表页面</h1>
 	<table id="dataGrid" class="easyui-datagrid hidden-label" toolbar="#toolbar">
 		<thead>
 			<tr>
 				<th field="name" width="100">名称</th>
-				<th field="key" width="200">分类</th>
-				<th field="category" width="80">分类2</th>
-				<th field="createTime" width="100">创建时间</th>
-				<th field="lastUpdateTime" width="100">最新修改时间</th>
+				<th field="key" width="200">KEY</th>
 				<th field="version" width="100">版本</th>
+				<th field="deployStatus" width="150">部署状态</th>
+				<th field="createTime" formatter="formatterDate" width="150">创建时间</th>
+				<th field="lastUpdateTime" formatter="formatterDate" width="150">最新修改时间</th>
+				<th field="deploymentTime" formatter="formatterDate" width="150">部署时间</th>
 			</tr>
 		</thead>
 	</table>
 	<div id="toolbar" class="hidden-label">
 		<button class="easyui-linkbutton" iconCls="icon-add" plain="true"
-			onclick="editGrid('#dataGrid', '#editDialog', '#formId', '', '/admin/model/add')">创建模型</button>
+			onclick="editGrid('#dataGrid', '#editDialog', '#formId', '', '/admin/model/add')">添加</button>
+		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editModel()">编辑</button>
+		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+			onclick="remove('#dataGrid', '/admin/model/remove')">删除</button>
+		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="deploy();">部署</button>
 	</div>
 
 
@@ -89,15 +106,15 @@
 		<form id="formId" method="post">
 			<div class="fitem">
 				<label>名称:</label>
-				<input name="name" class="easyui-validatebox" >
+				<input name="name" class="easyui-validatebox">
 			</div>
 			<div class="fitem">
 				<label>KEY:</label>
-				<input name="key" class="easyui-validatebox" >
+				<input name="key" class="easyui-validatebox">
 			</div>
 			<div class="fitem">
 				<label>描述:</label>
-				<input name="description" class="easyui-validatebox" >
+				<input name="description" class="easyui-validatebox">
 			</div>
 		</form>
 	</div>

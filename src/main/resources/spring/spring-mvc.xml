@@ -11,6 +11,9 @@
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+	<!-- 关于Spring MVC拦截器、返回JSON格式处理，请参考CSDN博客：https://blog.csdn.net/xhaimail -->
+
+	<!-- 这一行必须加上，不加报404 -->
 	<mvc:annotation-driven />
 
 	<!-- aspectj aop启用CGliB代理 -->

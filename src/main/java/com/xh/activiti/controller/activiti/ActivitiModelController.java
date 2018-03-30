@@ -1,13 +1,10 @@
-package com.xh.activiti.controller;
+package com.xh.activiti.controller.activiti;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.activiti.editor.constants.ModelDataJsonConstants;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.repository.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.xh.activiti.commons.utils.Assert;
+import com.xh.activiti.commons.utils.PageData;
+import com.xh.activiti.commons.utils.StringUtils;
+import com.xh.activiti.controller.BaseController;
+import com.xh.activiti.service.activiti.IActivitiModelService;
 
 /**
- * <p>Title: </p>
+ * <p>Title: 流程模型</p>
  * <p>Description: </p>
  * 
  * @author H.Yang
@@ -32,10 +31,10 @@ import com.xh.activiti.commons.utils.Assert;
 public class ActivitiModelController extends BaseController {
 
 	@Autowired
-	private RepositoryService repositoryService;
+	private IActivitiModelService modelService;
 
 	/**
-	 * <p>Title: 流程模列表</p>
+	 * <p>Title: 流程模型页面</p>
 	 * <p>Description: </p>
 	 * 
 	 * @author H.Yang
@@ -52,7 +51,7 @@ public class ActivitiModelController extends BaseController {
 	}
 
 	/**
-	 * <p>Title: 模型列表</p>
+	 * <p>Title: 流程模型列表</p>
 	 * <p>Description: </p>
 	 * 
 	 * @author H.Yang
@@ -62,19 +61,16 @@ public class ActivitiModelController extends BaseController {
 	 * @param response
 	 * @return
 	 */
-	@PostMapping("/queryModelDataGrid")
+	@PostMapping("/modelList")
 	@ResponseBody
-	public Object queryModelDataGrid() {
-		List<Model> list = repositoryService.createModelQuery()//
-				.orderByCreateTime()//
-				.desc()//
-				.list();
+	public Object modelDataGrid() {
 
+		List<PageData> list = modelService.selectModelMapList();
 		return list;
 	}
 
 	/**
-	 * <p>Title: 创建模型</p>
+	 * <p>Title: 创建流程模型</p>
 	 * <p>Description: </p>
 	 * 
 	 * @author H.Yang
@@ -91,42 +87,17 @@ public class ActivitiModelController extends BaseController {
 		Assert.isBlank(name, "名称不能为空");
 		Assert.isBlank(key, "KEY不能为空");
 		Assert.isBlank(description, "描述不能为空");
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			ObjectNode editorNode = objectMapper.createObjectNode();
-			editorNode.put("id", "canvas");
-			editorNode.put("resourceId", "canvas");
 
-			ObjectNode stencilSetNode = objectMapper.createObjectNode();
-			stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
-			editorNode.put("stencilset", stencilSetNode);
-
-			Model model = repositoryService.newModel();
-
-			ObjectNode modelObjectNode = objectMapper.createObjectNode();
-			modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, name);
-			modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);
-			modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, description);
-
-			model.setMetaInfo(modelObjectNode.toString());
-			model.setName(name);
-			model.setKey(key);
-
-			// 存入ACT_RE_MODEL
-			repositoryService.saveModel(model);
-			// 存入ACT_GE_BYTEARRAY
-			repositoryService.addModelEditorSource(model.getId(), editorNode.toString().getBytes("utf-8"));
-
-			Object obj = model.getId();
+		String modelId = modelService.insertModel(name, key, description);
+		if (StringUtils.isNotBlank(modelId)) {
+			Object obj = modelId;
 			return renderSuccess(obj);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return renderError("创建模型失败");
 		}
+		return renderError("创建模型失败");
 	}
 
 	/**
-	 * <p>Title: 打开模型视图</p>
+	 * <p>Title: 打开流程模型视图</p>
 	 * <p>Description: </p>
 	 * 
 	 * @author H.Yang
@@ -143,7 +114,7 @@ public class ActivitiModelController extends BaseController {
 	}
 
 	/**
-	 * <p>Title: 删除模型</p>
+	 * <p>Title: 删除流程模型</p>
 	 * <p>Description: </p>
 	 * 
 	 * @author H.Yang
@@ -153,15 +124,34 @@ public class ActivitiModelController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("/remove")
-	public Object remove(String modelId) {
-		Assert.isBlank(modelId, "ID不能为空");
-		try {
-			repositoryService.deleteModel(modelId);
-			return renderSuccess("添加成功！");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return renderError("添加失败！");
+	@ResponseBody
+	public Object remove(String paramId) {
+		Assert.isBlank(paramId, "ID不能为空");
+
+		if (modelService.deleteModel(paramId)) {
+			return renderSuccess("删除成功！");
 		}
+		return renderError("删除失败！");
+	}
+
+	/**
+	 * <p>Title: 模型部署</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月29日
+	 * 
+	 * @param paramId
+	 * @return
+	 */
+	@PostMapping("/deploy")
+	@ResponseBody
+	public Object deployModel(String paramId) {
+		Assert.isBlank(paramId, "模型ID不能为空");
+		if (modelService.deployModel(paramId)) {
+			return renderSuccess("部署成功！");
+		}
+		return renderError("部署失败！");
 	}
 
 }

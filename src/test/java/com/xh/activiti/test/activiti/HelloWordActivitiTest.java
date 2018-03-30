@@ -1,4 +1,4 @@
-package com.xh.activiti.test;
+package com.xh.activiti.test.activiti;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * <p>Title: </p>
+ * <p>Title: 熟悉Activiti</p>
  * <p>Description: </p>
  * 
  * @author H.Yang

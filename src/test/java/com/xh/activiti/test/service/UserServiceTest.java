@@ -1,8 +1,7 @@
-package com.xh.activiti.test;
+package com.xh.activiti.test.service;
 
 import java.util.List;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,7 +26,7 @@ public class UserServiceTest {
 	@Autowired
 	private IUserService userService;
 
-//	@Test
+	// @Test
 	public void selectByLoginName() {
 		User user = new User();
 		user.setLoginName("admin");
@@ -36,7 +35,7 @@ public class UserServiceTest {
 		System.out.println(list.size());
 	}
 
-	//@Test
+	// @Test
 	public void selectList() {
 		User user = new User();
 		user.setLoginName("admin");
@@ -47,9 +46,9 @@ public class UserServiceTest {
 			System.out.println(user2.toString());
 		}
 	}
-	
-	@Test
+
+	// @Test
 	public void selectCount() {
-//		userService.selectCount(3l);
+		// userService.selectCount(3l);
 	}
 }

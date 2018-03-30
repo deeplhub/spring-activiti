@@ -57,12 +57,12 @@
 				<bean id="performanceInterceptor" class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor" />
 			</array>
 		</property>
-	    <!-- 全局配置注入 -->
-	    <property name="globalConfig" ref="globalConfig" />
+		<!-- 全局配置注入 -->
+		<property name="globalConfig" ref="globalConfig" />
 	</bean>
-	
+
 	<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-	    <property name="idType" value="0" />
+		<property name="idType" value="0" />
 	</bean>
 
 	<!-- 3、MyBatis动态实现, 扫描DAO层,必须配置的项 2，可以不配置 id -->
@@ -82,11 +82,11 @@
 	<!-- 6、事务管理 属性 -->
 	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="select*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="select*" propagation="SUPPORTS" read-only="true" />
 			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
 			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
 			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />
-			<tx:method name="*" propagation="REQUIRED" />
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
 		</tx:attributes>
 	</tx:advice>
 

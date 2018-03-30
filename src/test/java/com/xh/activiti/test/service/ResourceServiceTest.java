@@ -1,4 +1,4 @@
-package com.xh.activiti.test;
+package com.xh.activiti.test.service;
 
 import java.util.HashSet;
 import java.util.List;

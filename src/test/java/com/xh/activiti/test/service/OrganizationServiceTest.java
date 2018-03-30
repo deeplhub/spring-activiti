@@ -1,4 +1,4 @@
-package com.xh.activiti.test;
+package com.xh.activiti.test.service;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

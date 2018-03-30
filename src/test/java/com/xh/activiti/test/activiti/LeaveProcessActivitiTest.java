@@ -1,4 +1,4 @@
-package com.xh.activiti.test;
+package com.xh.activiti.test.activiti;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * <p>Title: </p>
+ * <p>Title: 请假流程</p>
  * <p>Description: </p>
  * 
  * @author H.Yang
@@ -50,7 +50,7 @@ public class LeaveProcessActivitiTest {
 				name = "LeaveProcessName";
 		Deployment deployment = getProcessEngine().getRepositoryService()//
 				.createDeployment()// 创建一个部署对象
-				.name("请假流程")// 添加部署名称
+				.name("请假流程2")// 添加部署名称
 				.addClasspathResource("LeaveProcess.bpmn")// 从classpath的资源中加载，一次只能加载一个文件
 				.deploy();// 完成部署
 
@@ -69,7 +69,7 @@ public class LeaveProcessActivitiTest {
 	 * @date 2018年3月28日
 	 * 
 	 */
-//	@Test
+	// @Test
 	public void queryDeploymentFlow() {
 		List<Deployment> list = getProcessEngine().getRepositoryService()//
 				.createDeploymentQuery()//
@@ -96,7 +96,7 @@ public class LeaveProcessActivitiTest {
 		RepositoryService repositoryService = getProcessEngine().getRepositoryService();
 
 		// act_re_deployment表的ID
-		String deploymentId = "17501";
+		String deploymentId = "92501";
 
 		// 删除流程定义，只删除没有启动过的流程，如果流程启动则抛出异常
 		// repositoryService.deleteDeployment(deploymentId);

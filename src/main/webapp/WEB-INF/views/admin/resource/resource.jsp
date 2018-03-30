@@ -26,6 +26,7 @@
 			fitColumns: false,
 			border: true
 		});
+		
 	});
 	
 	function opened(value, row, index) {
@@ -64,6 +65,7 @@
 			$("#childTitle").addClass("ftitle");
 			$("#childTitle").html(row.name);
 			$("#pid").val(row.id);
+			comboboxDefault();
 			
 			$('#editDialog').dialog('open').dialog('setTitle', '添加');
 			
@@ -77,8 +79,28 @@
 		
 		$('#editDialog').dialog('open').dialog('setTitle', '添加');
 		$('#formId').form('clear');
+		comboboxDefault();
 		
 		baseUrl = "/admin/resource/add";
+	}
+	
+	function comboboxDefault(){
+		$('#openMode').combobox({    
+		    valueField:'ajax',
+		    textField:'ajax',
+		});
+		$('#status').combobox({    
+		    valueField:'0',
+		    textField:'正常',
+		});
+		$('#opened').combobox({    
+		    valueField:'1',
+		    textField:'打开',
+		});
+		$('#resourceType').combobox({    
+		    valueField:'1',
+		    textField:'按钮',
+		});
 	}
 	
 	
@@ -141,7 +163,7 @@
 			<div class="fitem">
 				<label>打开方式：</label>
 				<!-- <input id="combobox" name="openMode"> -->
-				<select class="easyui-combobox" name="openMode" panelHeight="auto" style="width:172px;" required="true">
+				<select id="openMode" class="easyui-combobox" name="openMode" panelHeight="auto" style="width:172px;" required="true">
 					<option value="ajax">ajax</option>
 					<option value="iframe">iframe</option>
 				</select>
@@ -149,7 +171,7 @@
 			<div class="fitem">
 				<label>状态：</label>
 				<!-- <input name="status"> -->
-				<select class="easyui-combobox" name="status" panelHeight="auto" style="width:172px;" required="true">
+				<select id="status" class="easyui-combobox" name="status" panelHeight="auto" style="width:172px;" required="true">
 					<option value="0">正常</option>
 					<option value="1">禁用</option>
 				</select>
@@ -157,7 +179,7 @@
 			<div class="fitem">
 				<label>打开状态：</label>
 				<!-- <input name="opened"> -->
-				<select class="easyui-combobox" name="opened" panelHeight="auto" style="width:172px;" required="true">
+				<select id="opened" class="easyui-combobox" name="opened" panelHeight="auto" style="width:172px;" required="true">
 					<option value="1">打开</option>
 					<option value="0">关闭</option>
 				</select>
@@ -165,7 +187,7 @@
 			<div class="fitem">
 				<label>资源类别：</label>
 				<!-- <input name="resourceType"> -->
-				<select class="easyui-combobox" name="resourceType" panelHeight="auto" style="width:172px;" required="true">
+				<select id="resourceType" class="easyui-combobox" name="resourceType" panelHeight="auto" style="width:172px;" required="true">
 					<option value="1">按钮</option>
 					<option value="0">菜单</option>
 				</select>
