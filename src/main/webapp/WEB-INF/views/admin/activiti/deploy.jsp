@@ -64,7 +64,7 @@
 	</table>
 	<div id="toolbar" class="hidden-label">
 		<button class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="">添加</button>
-		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="">删除</button>
+		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="remove('#dataGrid', '/admin/deploy/remove');">删除</button>
 		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="deploy();">部署</button>
 	</div>
 

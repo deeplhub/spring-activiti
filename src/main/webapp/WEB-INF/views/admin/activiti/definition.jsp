@@ -47,8 +47,13 @@
 		}
 	}
 	
-	function diagram(){
-		
+	function readDiagram(){
+		var row = $("#dataGrid").datagrid('getSelected');
+		console.info(row.deploymentId);
+		//debugger;
+		if (row) {
+			window.open(basePath + "/admin/definition/readDefinitionDiagram?deploymentId=" + row.deploymentId);
+		}
 	}
 
 </script>
@@ -69,7 +74,7 @@
 		</thead>
 	</table>
 	<div id="toolbar" class="hidden-label">
-		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="diagram();">查看流程图</button>
+		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="readDiagram();">查看流程图</button>
 	</div>
 
 </body>

@@ -83,6 +83,7 @@
 	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+			<!-- <tx:method name="read*" propagation="SUPPORTS" read-only="true" /> -->
 			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
 			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
 			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />

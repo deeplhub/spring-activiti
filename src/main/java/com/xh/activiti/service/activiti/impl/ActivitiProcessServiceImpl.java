@@ -1,7 +1,12 @@
 package com.xh.activiti.service.activiti.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -171,4 +176,48 @@ public class ActivitiProcessServiceImpl implements IActivitiProcessService {
 		return false;
 	}
 
+	/**
+	 * <p>Title: 查看流程定义图</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月31日
+	 * 
+	 * @param deploymentId
+	 * @param response
+	 */
+	@Override
+	public void readDefinitionStream(String deploymentId, HttpServletResponse response) {
+		InputStream in = null;
+		OutputStream out = null;
+		try {
+			List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery()//
+					.deploymentId(deploymentId)//
+					.list();
+			ProcessDefinition processDefinition = list.get(0);
+			// 通过部署ID和文件名称得到文件的输入流
+			in = repositoryService.getResourceAsStream(deploymentId, processDefinition.getDiagramResourceName());
+			out = response.getOutputStream();
+			// 把图片的输入流程写入response的输出流中
+			byte[] bytes = new byte[1024];
+			int len;
+			while ((len = in.read(bytes, 0, 1024)) != -1) {
+				out.write(bytes, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 关闭流
+			try {
+				if (out != null)
+					out.close();
+				if (in != null)
+					in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+
+			}
+		}
+
+	}
 }

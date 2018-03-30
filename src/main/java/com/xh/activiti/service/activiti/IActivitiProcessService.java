@@ -2,6 +2,8 @@ package com.xh.activiti.service.activiti;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.xh.activiti.commons.utils.PageData;
 
 /**
@@ -61,4 +63,16 @@ public interface IActivitiProcessService {
 	 * @return
 	 */
 	boolean deleteDeployment(String deploymentId, boolean cascade);
+
+	/**
+	 * <p>Title: 查看流程定义图</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年3月31日
+	 * 
+	 * @param deploymentId
+	 * @param response
+	 */
+	void readDefinitionStream(String deploymentId, HttpServletResponse response);
 }

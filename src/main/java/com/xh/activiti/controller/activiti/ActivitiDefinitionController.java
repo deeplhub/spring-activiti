@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xh.activiti.commons.utils.Assert;
 import com.xh.activiti.commons.utils.PageData;
 import com.xh.activiti.controller.BaseController;
 import com.xh.activiti.service.activiti.IActivitiProcessService;
@@ -67,18 +68,18 @@ public class ActivitiDefinitionController extends BaseController {
 	}
 
 	/**
-	 * <p>Title: 流程定义图</p>
+	 * <p>Title: 查看流程定义图</p>
 	 * <p>Description: </p>
 	 * 
 	 * @author H.Yang
 	 * @date 2018年3月29日
 	 * 
-	 * @return
+	 * @param deploymentId 流程定义ID
+	 * @param response
 	 */
-	@PostMapping("/definitionDiagram")
-	@ResponseBody
-	public Object definitionDiagram(String paramId) {
-
-		return "";
+	@GetMapping("/readDefinitionDiagram")
+	public void readDefinitionDiagramStream(String deploymentId, HttpServletResponse response) {
+		Assert.isBlank(deploymentId, "流程部署ID不能为空");
+		processService.readDefinitionStream(deploymentId, response);
 	}
 }
