@@ -1,13 +1,10 @@
 package com.xh.activiti.controller.activiti;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xh.activiti.commons.utils.PageData;
 import com.xh.activiti.controller.BaseController;
+import com.xh.activiti.service.activiti.IActivitiProcessService;
 
 /**
  * <p>Title: 流程定义</p>
@@ -31,7 +29,7 @@ import com.xh.activiti.controller.BaseController;
 public class ActivitiDefinitionController extends BaseController {
 
 	@Autowired
-	private RepositoryService repositoryService;
+	private IActivitiProcessService processService;
 
 	/**
 	 * <p>Title: 流程定义页面</p>
@@ -62,24 +60,10 @@ public class ActivitiDefinitionController extends BaseController {
 	@PostMapping("/definitionList")
 	@ResponseBody
 	public Object definitionDataGrid() {
-		// 查询流程定义，可以排序，查询数量，分页等
-		List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery()//
-				.list();
-		LinkedList<PageData> linkedList = new LinkedList<>();
-		PageData pd = null;
-		for (ProcessDefinition processDefinition : list) {
-			pd = new PageData();
-			pd.put("id", processDefinition.getId());
-			pd.put("name", processDefinition.getName());
-			pd.put("key", processDefinition.getKey());
-			pd.put("version", processDefinition.getVersion());
-			pd.put("diagramResourceName", processDefinition.getDiagramResourceName());
-			pd.put("resourceName", processDefinition.getResourceName());
-			pd.put("deploymentId", processDefinition.getDeploymentId());
-			pd.put("description", processDefinition.getDescription());
-			linkedList.add(pd);
-		}
-		return linkedList;
+
+		// 查询流程定义
+		List<PageData> list = processService.selectDefinitionList();
+		return list;
 	}
 
 	/**

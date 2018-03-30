@@ -161,7 +161,7 @@ public class ActivitiProcessServiceImpl implements IActivitiProcessService {
 	 * @return
 	 */
 	@Override
-	public boolean deleteProcessDefinition(String deploymentId, boolean cascade) {
+	public boolean deleteDeployment(String deploymentId, boolean cascade) {
 		try {
 			repositoryService.deleteDeployment(deploymentId, cascade);
 			return true;

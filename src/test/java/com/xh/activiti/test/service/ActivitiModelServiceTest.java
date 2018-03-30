@@ -141,11 +141,11 @@ public class ActivitiModelServiceTest {
 	 * 
 	 */
 	// @Test
-	public void deleteProcessDefinition() {
+	public void deleteDeployment() {
 		// act_re_deployment表的ID
 		String deploymentId = "117501";
 		// 删除流程定义，包括启动过的流程
-		boolean flag = processService.deleteProcessDefinition(deploymentId, true);
+		boolean flag = processService.deleteDeployment(deploymentId, true);
 		System.out.println("流程删除状态:" + flag);
 	}
 

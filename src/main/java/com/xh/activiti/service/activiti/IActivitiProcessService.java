@@ -60,5 +60,5 @@ public interface IActivitiProcessService {
 	 * @param cascade true:删除流程定义，包括启动过的流程;false:删除流程定义，只删除没有启动过的流程，如果流程启动则抛出异常
 	 * @return
 	 */
-	boolean deleteProcessDefinition(String deploymentId, boolean cascade);
+	boolean deleteDeployment(String deploymentId, boolean cascade);
 }
