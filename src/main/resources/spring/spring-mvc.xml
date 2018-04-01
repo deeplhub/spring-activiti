@@ -67,10 +67,12 @@
 	</bean>
 
 	<!-- 配置Fastjson支持 -->
+	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
 	<bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
 		<property name="supportedMediaTypes">
 			<list>
 				<value>text/html;charset=UTF-8</value>
+				<value>text/plain;charset=UTF-8</value>
 				<value>application/json;charset=UTF-8</value>
 			</list>
 		</property>
@@ -80,5 +82,15 @@
 				<value>QuoteFieldNames</value>
 			</list>
 		</property>
+	</bean>
+
+	<!-- 支持上传文件 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+		<!-- 上传文件的最大值,单位为B。5M = 5 * 1024 * 1024 -->
+		<!-- <property name="maxUploadSize" value="104857600"/> -->
+		<property name="maxUploadSize" value="5242880"/>
+		<!-- 缓存大小 -->
+		<property name="maxInMemorySize" value="40960"/>
 	</bean>
 </beans>

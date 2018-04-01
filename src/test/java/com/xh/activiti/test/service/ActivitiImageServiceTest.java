@@ -13,10 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.alibaba.fastjson.JSON;
-import com.xh.activiti.commons.utils.PageData;
-import com.xh.activiti.service.activiti.IActivitiProcessService;
-
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -27,19 +23,10 @@ import com.xh.activiti.service.activiti.IActivitiProcessService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
-public class ActivitiProcessServiceTest {
-
-	@Autowired
-	private IActivitiProcessService processService;
+public class ActivitiImageServiceTest {
 
 	@Autowired
 	private RepositoryService repositoryService;
-
-	// @Test
-	public void queryList() {
-		List<PageData> list = processService.selectDeployList();
-		System.out.println(JSON.toJSON(list));
-	}
 
 	@Test
 	public void showView() throws IOException {

@@ -49,8 +49,6 @@
 	
 	function readDiagram(){
 		var row = $("#dataGrid").datagrid('getSelected');
-		console.info(row.deploymentId);
-		//debugger;
 		if (row) {
 			window.open(basePath + "/admin/definition/readDefinitionDiagram?deploymentId=" + row.deploymentId);
 		}

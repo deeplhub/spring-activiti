@@ -1,8 +1,6 @@
 package com.xh.activiti.test.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.activiti.engine.repository.Model;
 import org.junit.Test;
@@ -13,8 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
 import com.xh.activiti.commons.utils.PageData;
+import com.xh.activiti.service.activiti.IActivitiDefinitionService;
+import com.xh.activiti.service.activiti.IActivitiDeploymentService;
 import com.xh.activiti.service.activiti.IActivitiModelService;
-import com.xh.activiti.service.activiti.IActivitiProcessService;
 
 /**
  * <p>Title: </p>
@@ -32,7 +31,10 @@ public class ActivitiModelServiceTest {
 	private IActivitiModelService modelService;
 
 	@Autowired
-	private IActivitiProcessService processService;
+	private IActivitiDeploymentService deploymentService;
+
+	@Autowired
+	private IActivitiDefinitionService definitionService;
 
 	/**
 	 * <p>Title: 查询模型列表</p>
@@ -52,7 +54,7 @@ public class ActivitiModelServiceTest {
 		// }
 
 		List<Model> list = modelService.selectModelList();
-		List<PageData> listPd = processService.selectDeployList();
+		List<PageData> listPd = deploymentService.selectDeployList();
 
 		for (Model model : list) {
 			System.out.println(model.getId());
@@ -145,7 +147,7 @@ public class ActivitiModelServiceTest {
 		// act_re_deployment表的ID
 		String deploymentId = "117501";
 		// 删除流程定义，包括启动过的流程
-		boolean flag = processService.deleteDeployment(deploymentId, true);
+		boolean flag = deploymentService.deleteDeployment(deploymentId, true);
 		System.out.println("流程删除状态:" + flag);
 	}
 
@@ -159,7 +161,7 @@ public class ActivitiModelServiceTest {
 	 */
 	// @Test
 	public void selectDeployList() {
-		List<PageData> list = processService.selectDeployList();
+		List<PageData> list = deploymentService.selectDeployList();
 		for (PageData pd : list) {
 			System.out.println("流程ID：" + pd.getString("id"));
 			System.out.println("流程名称：" + pd.getString("name"));
@@ -180,7 +182,7 @@ public class ActivitiModelServiceTest {
 	// @Test
 	public void queryFlow() {
 		// 查询流程定义，可以排序，查询数量，分页等
-		List<PageData> list = processService.selectDefinitionList();
+		List<PageData> list = definitionService.selectDefinitionList();
 		for (PageData pd : list) {
 			System.out.println("流程部署ID： " + pd.getString("deploymentId"));
 			System.out.println("流程定义ID： " + pd.getString("id"));
@@ -199,12 +201,12 @@ public class ActivitiModelServiceTest {
 	 * 
 	 */
 	// @Test
-	public void startProcess() {
-		String processDefinitionId = "92501";
-		Map<String, Object> variables = new HashMap<>();
-		variables.put("userName", "王五");
-
-		boolean flag = processService.startProcess(processDefinitionId, new PageData(variables));
-		System.out.println("流程启动状态：" + flag);
-	}
+	// public void startProcess() {
+	// String processDefinitionId = "92501";
+	// Map<String, Object> variables = new HashMap<>();
+	// variables.put("userName", "王五");
+	//
+	// boolean flag = definitionService.startProcess(processDefinitionId, new PageData(variables));
+	// System.out.println("流程启动状态：" + flag);
+	// }
 }

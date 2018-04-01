@@ -8,11 +8,46 @@ package com.xh.activiti.commons.result;
  * @date 2018年3月6日
  *
  */
-public class Result {
+public class Result<T> {
 
-	private Integer code = null;
-	private String msg = "";
-	private Object obj = null;
+	private Integer code;
+	private String msg;
+	// private Object obj = null;
+	private T obj;
+
+	public Result() {
+		super();
+	}
+
+	public Result(String msg) {
+		super();
+		this.msg = msg;
+	}
+
+	public Result(Integer code, String msg) {
+		super();
+		this.code = code;
+		this.msg = msg;
+	}
+
+	public Result(Integer code, String msg, T obj) {
+		super();
+		this.code = code;
+		this.msg = msg;
+		this.obj = obj;
+	}
+
+	public static Result exception(String msg) {
+		return new Result(msg);
+	}
+
+	public static Result exception(Integer code, String msg) {
+		return new Result(code, msg);
+	}
+
+	public static Result exception(Integer code, String msg, Object obj) {
+		return new Result(code, msg, obj);
+	}
 
 	public Integer getCode() {
 		return code;
@@ -30,11 +65,12 @@ public class Result {
 		this.msg = msg;
 	}
 
-	public Object getObj() {
+	public T getObj() {
 		return obj;
 	}
 
-	public void setObj(Object obj) {
+	public void setObj(T obj) {
 		this.obj = obj;
 	}
+
 }

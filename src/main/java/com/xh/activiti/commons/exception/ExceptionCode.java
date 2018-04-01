@@ -1,7 +1,7 @@
 package com.xh.activiti.commons.exception;
 
 /**
- * <p>Title: </p>
+ * <p>Title: 异常码</p>
  * <p>Description: </p>
  * 
  * @author H.Yang

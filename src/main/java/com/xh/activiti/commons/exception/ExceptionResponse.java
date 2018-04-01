@@ -10,34 +10,24 @@ import com.xh.activiti.commons.result.Result;
  * @date 2018年4月1日
  * 
  */
-public class ResultException extends RuntimeException {
+public class ExceptionResponse extends Exception {
 
 	private String msg;
-	private int code = 500;
+	private int code;
 
-	public ResultException(String msg) {
-		super(msg);
-		this.msg = msg;
-	}
-
-	public ResultException(String msg, Throwable e) {
-		super(msg, e);
-		this.msg = msg;
-	}
-
-	public ResultException(String msg, int code) {
+	public ExceptionResponse(String msg, int code) {
 		super(msg);
 		this.msg = msg;
 		this.code = code;
 	}
 
-	public ResultException(String msg, int code, Throwable e) {
+	public ExceptionResponse(String msg, int code, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
 		this.code = code;
 	}
 
-	public Result getException(Integer code, String message) {
+	public static Result getException(Integer code, String message) {
 		return Result.exception(code, message);
 	}
 

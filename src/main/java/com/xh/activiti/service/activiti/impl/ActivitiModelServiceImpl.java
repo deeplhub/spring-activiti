@@ -8,6 +8,7 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.xh.activiti.commons.utils.PageData;
+import com.xh.activiti.service.activiti.IActivitiDeploymentService;
 import com.xh.activiti.service.activiti.IActivitiModelService;
-import com.xh.activiti.service.activiti.IActivitiProcessService;
 
 /**
  * <p>Title: 流程模型</p>
@@ -34,7 +35,10 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 	private RepositoryService repositoryService;
 
 	@Autowired
-	private IActivitiProcessService processService;
+	private RuntimeService runtimeService;
+
+	@Autowired
+	private IActivitiDeploymentService deploymentService;
 
 	/**
 	 * <p>Title: 流程模型列表</p>
@@ -69,7 +73,7 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 	public List<PageData> selectModelMapList() {
 		List<Model> list = this.selectModelList();
 		// 查询流程部署
-		List<PageData> listPd = processService.selectDeployList();
+		List<PageData> listPd = deploymentService.selectDeployList();
 
 		LinkedList<PageData> linked = new LinkedList<>();
 		PageData pd = null;
@@ -187,10 +191,10 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 
 	/**
 	 * <p>Title: 部署模型</p>
-	 * <p>Description: 操作以下表：<br>
+	 * <p>Description: <h3>部署模型时操作以下表：</h3>
 	 * 部署信息表ACT_RE_DEPLOYMENT<br>
 	 * 二进制数据表ACT_GE_BYTEARRA<br>
-	 * 流程定义数据表ACT_RE_PROCDEF</p>
+	 * 流程定义数据表ACT_RE_PROCDEF<br><br>
 	 * 
 	 * @author H.Yang
 	 * @date 2018年3月30日
@@ -217,7 +221,6 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 			// 更新部署信息ID
 			modelData.setDeploymentId(deployment.getId());
 			repositoryService.saveModel(modelData);
-
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

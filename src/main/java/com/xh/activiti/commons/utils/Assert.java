@@ -1,7 +1,5 @@
 package com.xh.activiti.commons.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.xh.activiti.commons.exception.ResultException;
 
 /**

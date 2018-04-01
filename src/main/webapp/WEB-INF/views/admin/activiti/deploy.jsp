@@ -28,7 +28,6 @@
 			pagination : true,//分页控件 
 			rownumbers : true,//行号 
 		});
-
 	});
 
 	function formatterDate(value, row, index) {
@@ -50,7 +49,6 @@
 			});
 		}
 	}
-
 </script>
 </head>
 <body>
@@ -63,10 +61,23 @@
 		</thead>
 	</table>
 	<div id="toolbar" class="hidden-label">
-		<button class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="">添加</button>
-		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="remove('#dataGrid', '/admin/deploy/remove');">删除</button>
-		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="deploy();">部署</button>
+		<button class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="editGrid('#dataGrid', '#editDialog', '#formId', '', '/admin/deploy/add')">添加</button>
+		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+			onclick="remove('#dataGrid', '/admin/deploy/remove');">删除</button>
 	</div>
 
+	<div id="editDialog" class="easyui-dialog hidden-label" style="width: 400px; height: 280px; padding: 10px 20px;"
+		closed="true" buttons="#dlg-buttons">
+		<form id="formId" method="post" enctype="multipart/form-data">
+			<div class="fitem">
+				<label>上传文件:</label>
+				<input type="file" name="file" class="easyui-validatebox" onchange="validateFile(this);">
+			</div>
+		</form>
+	</div>
+	<div id="dlg-buttons" class="hidden-label">
+		<button class="easyui-linkbutton" iconCls="icon-ok" onclick="saveAndUpdate('#formId')">保存</button>
+		<button class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#editDialog').dialog('close')">取消</button>
+	</div>
 </body>
 </html>

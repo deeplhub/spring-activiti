@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * <p>Title: 流程模型</p>
- * <p>Description: </p>
+ * <p>Description: 创建模型->部署流程->启动流程 </p>
  * 
  * @author H.Yang
  * @QQ 1033542070
@@ -36,6 +36,7 @@ public class LeaveModelActivitiTest {
 
 	@Autowired
 	private RepositoryService repositoryService;
+
 	@Autowired
 	private RuntimeService runtimeService;
 

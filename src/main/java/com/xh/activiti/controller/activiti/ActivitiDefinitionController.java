@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xh.activiti.commons.utils.Assert;
 import com.xh.activiti.commons.utils.PageData;
 import com.xh.activiti.controller.BaseController;
-import com.xh.activiti.service.activiti.IActivitiProcessService;
+import com.xh.activiti.service.activiti.IActivitiDefinitionService;
 
 /**
  * <p>Title: 流程定义</p>
@@ -30,7 +30,7 @@ import com.xh.activiti.service.activiti.IActivitiProcessService;
 public class ActivitiDefinitionController extends BaseController {
 
 	@Autowired
-	private IActivitiProcessService processService;
+	private IActivitiDefinitionService definitionService;
 
 	/**
 	 * <p>Title: 流程定义页面</p>
@@ -63,7 +63,7 @@ public class ActivitiDefinitionController extends BaseController {
 	public Object definitionDataGrid() {
 
 		// 查询流程定义
-		List<PageData> list = processService.selectDefinitionList();
+		List<PageData> list = definitionService.selectDefinitionList();
 		return list;
 	}
 
@@ -80,6 +80,6 @@ public class ActivitiDefinitionController extends BaseController {
 	@GetMapping("/readDefinitionDiagram")
 	public void readDefinitionDiagramStream(String deploymentId, HttpServletResponse response) {
 		Assert.isBlank(deploymentId, "流程部署ID不能为空");
-		processService.readDefinitionStream(deploymentId, response);
+		definitionService.readDefinitionStream(deploymentId, response);
 	}
 }

@@ -1,20 +1,19 @@
 package com.xh.activiti.service.activiti;
 
+import java.io.InputStream;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import com.xh.activiti.commons.utils.PageData;
 
 /**
- * <p>Title: Activiti流程-通用接口</p>
+ * <p>Title: </p>
  * <p>Description: </p>
  * 
  * @author H.Yang
  * @QQ 1033542070
- * @date 2018年3月30日
+ * @date 2018年4月1日
  */
-public interface IActivitiProcessService {
+public interface IActivitiDeploymentService {
 
 	/**
 	 * <p>Title: 查询流程部署</p>
@@ -26,30 +25,6 @@ public interface IActivitiProcessService {
 	 * @return
 	 */
 	List<PageData> selectDeployList();
-
-	/**
-	 * <p>Title: 查询流程定义</p>
-	 * <p>Description: </p>
-	 * 
-	 * @author H.Yang
-	 * @date 2018年3月30日
-	 * 
-	 * @return
-	 */
-	List<PageData> selectDefinitionList();
-
-	/**
-	 * <p>Title: 启动流程</p>
-	 * <p>Description: </p>
-	 * 
-	 * @author H.Yang
-	 * @date 2018年3月30日
-	 * 
-	 * @param processDefinitionId
-	 * @param variables
-	 * @return
-	 */
-	boolean startProcess(String processDefinitionId, PageData variables);
 
 	/**
 	 * <p>Title: 删除流程部署</p>
@@ -65,14 +40,15 @@ public interface IActivitiProcessService {
 	boolean deleteDeployment(String deploymentId, boolean cascade);
 
 	/**
-	 * <p>Title: 查看流程定义图</p>
+	 * <p>Title: 用流的方式对流程部署</p>
 	 * <p>Description: </p>
 	 * 
 	 * @author H.Yang
-	 * @date 2018年3月31日
+	 * @date 2018年4月1日
 	 * 
-	 * @param deploymentId
-	 * @param response
+	 * @param fileName
+	 * @param inputStream
+	 * @return
 	 */
-	void readDefinitionStream(String deploymentId, HttpServletResponse response);
+	boolean deployInputStream(String fileName, InputStream inputStream);
 }

@@ -85,9 +85,9 @@ public abstract class BaseController {
 	 * @return {Object}
 	 */
 	public Object renderError(String msg) {
-		Result result = new Result();
-		result.setMsg(msg);
-		return result;
+		// Result result = new Result();
+		// result.setMsg(msg);
+		return Result.exception(msg);
 	}
 
 	/**
@@ -97,10 +97,10 @@ public abstract class BaseController {
 	 * @return {Object}
 	 */
 	public Object renderError(Integer code, String msg) {
-		Result result = new Result();
-		result.setCode(code);
-		result.setMsg(msg);
-		return result;
+		// Result result = new Result();
+		// result.setCode(code);
+		// result.setMsg(msg);
+		return Result.exception(code, msg);
 	}
 
 	/**
@@ -108,10 +108,10 @@ public abstract class BaseController {
 	 * @return {Object}
 	 */
 	public Object renderSuccess() {
-		Result result = new Result();
-		result.setCode(ExceptionCode.SUCCESS.code);
-		result.setMsg(ExceptionCode.SUCCESS.msg);
-		return result;
+		// Result result = new Result();
+		// result.setCode(ExceptionCode.SUCCESS.code);
+		// result.setMsg(ExceptionCode.SUCCESS.msg);
+		return Result.exception(ExceptionCode.SUCCESS.code, ExceptionCode.SUCCESS.msg);
 	}
 
 	/**
@@ -120,10 +120,10 @@ public abstract class BaseController {
 	 * @return {Object}
 	 */
 	public Object renderSuccess(String msg) {
-		Result result = new Result();
-		result.setCode(ExceptionCode.SUCCESS.code);
-		result.setMsg(msg);
-		return result;
+		// Result result = new Result();
+		// result.setCode(ExceptionCode.SUCCESS.code);
+		// result.setMsg(msg);
+		return Result.exception(ExceptionCode.SUCCESS.code, msg);
 	}
 
 	/**
@@ -132,10 +132,10 @@ public abstract class BaseController {
 	 * @return {Object}
 	 */
 	public Object renderSuccess(Object obj) {
-		Result result = new Result();
-		result.setCode(ExceptionCode.SUCCESS.code);
-		result.setObj(obj);
-		return result;
+		// Result<Object> result = new Result<Object>();
+		// result.setCode(ExceptionCode.SUCCESS.code);
+		// result.setObj(obj);
+		return Result.exception(ExceptionCode.SUCCESS.code, "", obj);
 	}
 
 	public <T> Page<T> getPage(int current, int size, String sort, String order) {
