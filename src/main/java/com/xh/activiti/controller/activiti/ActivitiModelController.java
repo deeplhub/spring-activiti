@@ -1,17 +1,27 @@
 package com.xh.activiti.controller.activiti;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
+import org.activiti.engine.repository.Model;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xh.activiti.commons.utils.Assert;
 import com.xh.activiti.commons.utils.PageData;
 import com.xh.activiti.commons.utils.StringUtils;
@@ -45,7 +55,7 @@ public class ActivitiModelController extends BaseController {
 	 * @return
 	 */
 	@GetMapping("/manager")
-	public String queryList(HttpServletRequest request, HttpServletResponse response) {
+	public String queryList() {
 
 		return "admin/activiti/model";
 	}
@@ -81,7 +91,7 @@ public class ActivitiModelController extends BaseController {
 	 * @param description
 	 * @return
 	 */
-	@RequestMapping("/add")
+	@PostMapping("/add")
 	@ResponseBody
 	public Object addModel(String name, String key, String description) {
 		Assert.isBlank(name, "名称不能为空");
@@ -91,7 +101,7 @@ public class ActivitiModelController extends BaseController {
 		String modelId = modelService.insertModel(name, key, description);
 		if (StringUtils.isNotBlank(modelId)) {
 			Object obj = modelId;
-			return renderSuccess(obj);
+			return renderSuccess("创建模型成功", obj);
 		}
 		return renderError("创建模型失败");
 	}
@@ -106,11 +116,11 @@ public class ActivitiModelController extends BaseController {
 	 * @param modelId
 	 * @return
 	 */
-	@RequestMapping("/openModelView")
-	public String openModelView(String modelId) {
-		Assert.isBlank(modelId, "模型ID不能为空");
+	@GetMapping("/open/{paramId}/view")
+	public String openModelView(@PathVariable("paramId") String paramId) {
+		Assert.isBlank(paramId, "模型ID不能为空");
 		// 重定向方式
-		return "redirect:../../plugins/activiti/modeler.html?modelId=" + modelId;
+		return "redirect:/plugins/activiti/modeler.html?modelId=" + paramId;
 	}
 
 	/**
@@ -154,4 +164,63 @@ public class ActivitiModelController extends BaseController {
 		return renderError("部署失败！");
 	}
 
+	/**
+	 * <p>Title: 导出文件</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @param paramId
+	 * @param type 导出文件类型(bpmn\json\xml)
+	 * @param response
+	 */
+	@GetMapping("/export/{paramId}/{type}")
+	public void export(@PathVariable("paramId") String paramId, @PathVariable("type") String type, HttpServletResponse response) {
+		Assert.isBlank(paramId, "模型ID不能为空");
+		try {
+			Model model = modelService.selectByModelId(paramId);
+			byte[] modelEditorSource = modelService.getModelEditorSource(model.getId());
+
+			JsonNode jsonNode = new ObjectMapper().readTree(modelEditorSource);
+			BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(jsonNode);
+
+			// 此代码注释说明：获取流程定义中的名称，如果只创建模型，没对创建的模型制图或设置流程定义操作会出现以下异常
+			// 处理异常
+			// if (bpmnModel.getMainProcess() == null) {
+			// String msg = "<h2>未知的流程模型</h2>";
+			// response.setContentType("text/html;charset=UTF-8");
+			// response.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+			// response.getWriter().print(msg); // 换成这个就好了
+			// response.getWriter().close();
+			// return;
+			// }
+
+			// 这是获取流程定义中的名称
+			// String fileName = bpmnModel.getMainProcess().getName();
+
+			byte[] exportBytes = null;
+			String fileName = model.getName();
+			if (type.equals("bpmn")) {
+				exportBytes = new BpmnXMLConverter().convertToXML(bpmnModel);
+				// 生成activiti文件
+				fileName += ".bpmn";
+			} else if (type.equals("xml")) {
+				exportBytes = new BpmnXMLConverter().convertToXML(bpmnModel);
+				// 生成xml文件
+				fileName += ".bpmn20.xml";
+			} else {
+				exportBytes = modelEditorSource;
+				fileName += ".json";
+			}
+
+			ByteArrayInputStream in = new ByteArrayInputStream(exportBytes);
+			IOUtils.copy(in, response.getOutputStream());
+
+			response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8"));
+			response.flushBuffer();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

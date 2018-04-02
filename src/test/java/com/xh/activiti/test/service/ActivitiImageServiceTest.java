@@ -28,6 +28,15 @@ public class ActivitiImageServiceTest {
 	@Autowired
 	private RepositoryService repositoryService;
 
+	/**
+	 * <p>Title: 保存流程部署图片</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void showView() throws IOException {
 		// 创建仓库服务对对象

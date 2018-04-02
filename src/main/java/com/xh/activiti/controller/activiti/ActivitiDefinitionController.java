@@ -74,12 +74,32 @@ public class ActivitiDefinitionController extends BaseController {
 	 * @author H.Yang
 	 * @date 2018年3月29日
 	 * 
-	 * @param deploymentId 流程定义ID
+	 * @param deploymentId 流程部署ID
 	 * @param response
 	 */
 	@GetMapping("/readDefinitionDiagram")
 	public void readDefinitionDiagramStream(String deploymentId, HttpServletResponse response) {
-		Assert.isBlank(deploymentId, "流程部署ID不能为空");
+		Assert.isBlank(deploymentId, "流程定义ID不能为空");
 		definitionService.readDefinitionStream(deploymentId, response);
+	}
+
+	/**
+	 * <p>Title: 将流程定义转换成模型</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @param definitionId
+	 * @return
+	 */
+	@PostMapping("/definitionToModel")
+	@ResponseBody
+	public Object definitionToModel(String paramId) {
+		Assert.isBlank(paramId, "流程定义ID不能为空");
+		if (definitionService.definitionToModel(paramId)) {
+			return renderSuccess("模型生成成功！");
+		}
+		return renderError("模型生成失败！");
 	}
 }

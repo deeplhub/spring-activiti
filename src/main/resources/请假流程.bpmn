@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="请假流程标识" name="请假工作流程" isExecutable="true">
+    <documentation>请假流程</documentation>
+    <startEvent id="请假流程开始" name="开始">
+      <documentation>流程开始</documentation>
+    </startEvent>
+    <userTask id="提交请假申请" name="提交申请" activiti:assignee="${userName}">
+      <documentation>用于提交请假申请</documentation>
+    </userTask>
+    <sequenceFlow id="sid-4C7C453C-F522-4410-97F4-B72465D41932" sourceRef="请假流程开始" targetRef="提交请假申请"></sequenceFlow>
+    <userTask id="部门经理审批请假申请" name="审批【部门经理】" activiti:assignee="${userName}">
+      <documentation>部门经理对请假人员进行审批</documentation>
+    </userTask>
+    <userTask id="总经理审批请假申请" name="审批【总经理】" activiti:assignee="${userName}">
+      <documentation>总经理对请假人员进行审批</documentation>
+    </userTask>
+    <endEvent id="请假流程同意并结束" name="结束">
+      <documentation>整个请假流程结束【同意】</documentation>
+    </endEvent>
+    <endEvent id="整个请假流程不同意并结束" name="结束">
+      <documentation>整个请假流程结束【不同意】</documentation>
+    </endEvent>
+    <sequenceFlow id="sid-044FD61E-324A-432F-B4AC-B9B267F82BBE" sourceRef="提交请假申请" targetRef="部门经理审批请假申请"></sequenceFlow>
+    <sequenceFlow id="部门经理同意" name="同意" sourceRef="部门经理审批请假申请" targetRef="总经理审批请假申请">
+      <documentation>部门经理同意申请</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${pass=='Yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="总经理同意" name="同意" sourceRef="总经理审批请假申请" targetRef="请假流程同意并结束">
+      <documentation>总经理同意请假申请</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${pass=='Yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="部门经理不同意" name="不同意" sourceRef="部门经理审批请假申请" targetRef="整个请假流程不同意并结束">
+      <documentation>部门经理不同意请假申请</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${pass=='No'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="总经理不同意" name="不同意" sourceRef="总经理审批请假申请" targetRef="整个请假流程不同意并结束">
+      <documentation>总经理不同意请假申请</documentation>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${pass=='No'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_请假流程标识">
+    <bpmndi:BPMNPlane bpmnElement="请假流程标识" id="BPMNPlane_请假流程标识">
+      <bpmndi:BPMNShape bpmnElement="请假流程开始" id="BPMNShape_请假流程开始">
+        <omgdc:Bounds height="30.0" width="30.0" x="98.5" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="提交请假申请" id="BPMNShape_提交请假申请">
+        <omgdc:Bounds height="80.0" width="100.0" x="180.0" y="72.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="部门经理审批请假申请" id="BPMNShape_部门经理审批请假申请">
+        <omgdc:Bounds height="80.0" width="100.0" x="330.0" y="72.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="总经理审批请假申请" id="BPMNShape_总经理审批请假申请">
+        <omgdc:Bounds height="80.0" width="100.0" x="555.0" y="72.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="请假流程同意并结束" id="BPMNShape_请假流程同意并结束">
+        <omgdc:Bounds height="28.0" width="28.0" x="765.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="整个请假流程不同意并结束" id="BPMNShape_整个请假流程不同意并结束">
+        <omgdc:Bounds height="28.0" width="28.0" x="480.0" y="225.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="总经理不同意" id="BPMNEdge_总经理不同意">
+        <omgdi:waypoint x="570.0393700787401" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="503.2131868509648" y="228.45878621556278"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="总经理同意" id="BPMNEdge_总经理同意">
+        <omgdi:waypoint x="655.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-044FD61E-324A-432F-B4AC-B9B267F82BBE" id="BPMNEdge_sid-044FD61E-324A-432F-B4AC-B9B267F82BBE">
+        <omgdi:waypoint x="280.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-4C7C453C-F522-4410-97F4-B72465D41932" id="BPMNEdge_sid-4C7C453C-F522-4410-97F4-B72465D41932">
+        <omgdi:waypoint x="128.5" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="部门经理同意" id="BPMNEdge_部门经理同意">
+        <omgdi:waypoint x="430.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="部门经理不同意" id="BPMNEdge_部门经理不同意">
+        <omgdi:waypoint x="415.90551181102364" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="484.6480985844676" y="228.58165368620513"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

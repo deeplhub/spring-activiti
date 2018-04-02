@@ -1,5 +1,8 @@
 package com.xh.activiti.test.activiti;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +17,14 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -272,4 +278,32 @@ public class LeaveModelActivitiTest {
 		System.out.println("是否暂停：       " + processInstance.isSuspended());
 		System.out.println("################################");
 	}
+
+	/**
+	 * <p>Title: 导出模型-模型导出bpmn文件或xml文件</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void exportBpmnOrXml() throws IOException {
+		String modelId = "85001", //
+				filename = "";
+		Model model = repositoryService.getModel(modelId);
+		JsonNode jsonNode = new ObjectMapper().readTree(repositoryService.getModelEditorSource(model.getId()));
+		BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(jsonNode);
+
+		// filename = bpmnModel.getMainProcess().getId() + ".bpmn20.xml";
+		filename = model.getName() + ".bpmn";
+		byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(bpmnModel);
+
+		ByteArrayInputStream in = new ByteArrayInputStream(bpmnBytes);
+
+		File f = new File("E:/" + filename);
+		FileUtils.copyInputStreamToFile(in, f);
+	}
+
 }

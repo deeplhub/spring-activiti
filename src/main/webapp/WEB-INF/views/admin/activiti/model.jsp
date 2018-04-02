@@ -32,7 +32,10 @@
 	});
 
 	function formatterDate(value, row, index) {
-		return TimeObjectUtil.longMsTimeConvertToDateTime(value);
+		if(value != null){
+			return TimeObjectUtil.longMsTimeConvertToDateTime(value);
+		}
+		return null;
 	}
 
 	function successCallback(result) {
@@ -43,9 +46,8 @@
 				title : 'Success',
 				msg : result.msg
 			});
-			
 			if (result.obj != null) {
-				window.open(basePath + "/admin/model/openModelView?modelId=" + result.obj);
+				window.open(basePath + "/admin/model/open/" + result.obj + "/view");
 			}
 		} else {
 			$.messager.show({
@@ -58,7 +60,7 @@
 	function editModel() {
 		var row = $("#dataGrid").datagrid('getSelected');
 		if (row) {
-			window.open(basePath + "/admin/model/openModelView?modelId=" + row.id);
+			window.open(basePath + "/admin/model/open/" + row.id + "/view");
 		}
 	}
 	
@@ -75,15 +77,22 @@
 			setting.post(data);
 		}
 	}
+	
+	function exportModel(type){
+		var row = $("#dataGrid").datagrid('getSelected');
+		if (row) {
+			window.location.href = basePath + "/admin/model/export/" + row.id + "/" + type;
+		}
+	}
 </script>
 </head>
 <body>
 	<table id="dataGrid" class="easyui-datagrid hidden-label" toolbar="#toolbar">
 		<thead>
 			<tr>
-				<th field="name" width="100">名称</th>
+				<th field="name" width="200">名称</th>
 				<th field="key" width="200">KEY</th>
-				<th field="version" width="100">版本</th>
+				<th field="version" width="70">版本</th>
 				<th field="deployStatus" width="150">部署状态</th>
 				<th field="createTime" formatter="formatterDate" width="150">创建时间</th>
 				<th field="lastUpdateTime" formatter="formatterDate" width="150">最新修改时间</th>
@@ -98,6 +107,9 @@
 		<button class="easyui-linkbutton" iconCls="icon-remove" plain="true"
 			onclick="remove('#dataGrid', '/admin/model/remove')">删除</button>
 		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="deploy();">部署</button>
+		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="exportModel('bpmn');">导出Bpmn</button>
+		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="exportModel('xml');">导出XML</button>
+		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="exportModel('json');">导出JSON</button>
 	</div>
 
 

@@ -26,7 +26,7 @@ public interface IActivitiModelService {
 	 * @return
 	 */
 	List<Model> selectModelList();
-	
+
 	/**
 	 * <p>Title: 流程模型列表</p>
 	 * <p>Description: </p>
@@ -87,4 +87,16 @@ public interface IActivitiModelService {
 	 * @return
 	 */
 	boolean deployModel(String paramId);
+
+	/**
+	 * <p>Title: 将模型编辑器源作为字节数组返回</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @param modelId
+	 * @return
+	 */
+	byte[] getModelEditorSource(String modelId);
 }

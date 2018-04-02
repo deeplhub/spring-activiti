@@ -53,6 +53,19 @@
 			window.open(basePath + "/admin/definition/readDefinitionDiagram?deploymentId=" + row.deploymentId);
 		}
 	}
+	
+	function generateModel(){
+		var row = $("#dataGrid").datagrid('getSelected');
+		var data = {
+				url:basePath + "/admin/definition/definitionToModel",
+				data:{
+					paramId: row.id
+				},
+				returnType:"json"
+		};
+		debugger;
+		setting.post(data);
+	}
 
 </script>
 </head>
@@ -73,6 +86,7 @@
 	</table>
 	<div id="toolbar" class="hidden-label">
 		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="readDiagram();">查看流程图</button>
+		<button class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="generateModel();">生成模型</button>
 	</div>
 
 </body>

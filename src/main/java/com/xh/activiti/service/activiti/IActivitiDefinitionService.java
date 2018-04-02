@@ -38,7 +38,7 @@ public interface IActivitiDefinitionService {
 	 * @param variables
 	 * @return
 	 */
-//	boolean startProcess(String processDefinitionId, PageData variables);
+	// boolean startProcess(String processDefinitionId, PageData variables);
 
 	/**
 	 * <p>Title: 查看流程定义图</p>
@@ -51,4 +51,16 @@ public interface IActivitiDefinitionService {
 	 * @param response
 	 */
 	void readDefinitionStream(String deploymentId, HttpServletResponse response);
+
+	/**
+	 * <p>Title: 流程定义转换成流程模型</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @param definitionId
+	 * @return
+	 */
+	boolean definitionToModel(String definitionId);
 }

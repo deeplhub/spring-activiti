@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.xh.activiti.commons.exception.ResultException;
 import com.xh.activiti.commons.utils.PageData;
+import com.xh.activiti.commons.utils.StringUtils;
 import com.xh.activiti.service.activiti.IActivitiDeploymentService;
 import com.xh.activiti.service.activiti.IActivitiModelService;
 
@@ -85,15 +87,14 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 			pd.put("version", model.getVersion());
 			pd.put("createTime", model.getCreateTime());
 			pd.put("lastUpdateTime", model.getLastUpdateTime());
+			pd.put("deployStatus", "未部署");
+			pd.put("deploymentTime", null);
 
 			for (PageData data : listPd) {
-				if (model.getDeploymentId().equals(data.getString("id"))) {
+				if (model.getDeploymentId() != null && model.getDeploymentId().equals(data.getString("id"))) {
 					pd.put("deployStatus", "已部署");
 					pd.put("deploymentTime", data.get("deploymentTime"));
 					break;
-				} else {
-					pd.put("deployStatus", "未已部署");
-					pd.put("deploymentTime", "");
 				}
 			}
 			linked.add(pd);
@@ -134,27 +135,26 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 	 */
 	@Override
 	public String insertModel(String name, String key, String description) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectNode editorNode = objectMapper.createObjectNode();
+		editorNode.put("id", "canvas");
+		editorNode.put("resourceId", "canvas");
+		ObjectNode stencilSetNode = objectMapper.createObjectNode();
+		stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
+		editorNode.put("stencilset", stencilSetNode);
+
+		Model model = repositoryService.newModel();
+
+		ObjectNode modelObjectNode = objectMapper.createObjectNode();
+		modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, name);
+		modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);// 型号修订
+		modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, description);
+
+		model.setMetaInfo(modelObjectNode.toString());
+		model.setName(name);
+		model.setKey(key);
+
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			ObjectNode editorNode = objectMapper.createObjectNode();
-			editorNode.put("id", "canvas");
-			editorNode.put("resourceId", "canvas");
-
-			ObjectNode stencilSetNode = objectMapper.createObjectNode();
-			stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
-			editorNode.put("stencilset", stencilSetNode);
-
-			Model model = repositoryService.newModel();
-
-			ObjectNode modelObjectNode = objectMapper.createObjectNode();
-			modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, name);
-			modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);// 型号修订
-			modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, description);
-
-			model.setMetaInfo(modelObjectNode.toString());
-			model.setName(name);
-			model.setKey(key);
-
 			// 存入ACT_RE_MODEL
 			repositoryService.saveModel(model);
 			// 存入ACT_GE_BYTEARRAY
@@ -204,11 +204,13 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 	 */
 	@Override
 	public boolean deployModel(String modelId) {
-		try {
-			Model modelData = repositoryService.getModel(modelId);
+		Model modelData = this.selectByModelId(modelId);
+		if (StringUtils.isNotBlank(modelData.getDeploymentId()))
+			throw new ResultException("模型已部署");
 
+		try {
 			ObjectNode modelNode = (ObjectNode) new ObjectMapper()//
-					.readTree(repositoryService.getModelEditorSource(modelData.getId()));
+					.readTree(this.getModelEditorSource(modelData.getId()));
 			BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
 			byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
 			String processName = modelData.getName() + ".bpmn20.xml";
@@ -226,5 +228,21 @@ public class ActivitiModelServiceImpl implements IActivitiModelService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	/**
+	 * <p>Title: 将模型编辑器作为字节数组返回</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @param modelId
+	 * @return
+	 */
+	@Override
+	public byte[] getModelEditorSource(String modelId) {
+
+		return repositoryService.getModelEditorSource(modelId);
 	}
 }

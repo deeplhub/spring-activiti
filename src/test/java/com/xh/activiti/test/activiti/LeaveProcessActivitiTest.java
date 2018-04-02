@@ -1,9 +1,20 @@
 package com.xh.activiti.test.activiti;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.editor.constants.ModelDataJsonConstants;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.RepositoryService;
@@ -11,12 +22,16 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * <p>Title: 请假流程</p>
@@ -383,5 +398,64 @@ public class LeaveProcessActivitiTest {
 		} else {
 			System.out.println("流程已经执行结束！");
 		}
+	}
+
+	/**
+	 * <p>Title: 流程定义转换模型</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月2日
+	 * 
+	 * @throws UnsupportedEncodingException
+	 * @throws XMLStreamException
+	 */
+	// @Test
+	public void definitionToModel() throws UnsupportedEncodingException, XMLStreamException {
+		String definitionId = "LeaveProcessKey:1:127504";
+
+		RepositoryService repositoryService = getProcessEngine().getRepositoryService();
+
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()//
+				.processDefinitionId(definitionId)//
+				.singleResult();
+		System.out.println("流程组织机构： " + processDefinition.getCategory());
+		System.out.println("流程部署ID： " + processDefinition.getDeploymentId());
+		System.out.println("流程描述：       " + processDefinition.getDescription());
+		System.out.println("流程图片文件： " + processDefinition.getDiagramResourceName());
+		System.out.println("流程定义ID： " + processDefinition.getId());
+		System.out.println("流程定义key " + processDefinition.getKey());
+		System.out.println("流程设计名称： " + processDefinition.getName());
+		System.out.println("流程定义文件： " + processDefinition.getResourceName());
+		System.out.println("流程所有人ID：    " + processDefinition.getTenantId());
+		System.out.println("流程版本：       " + processDefinition.getVersion());
+		System.out.println("################################");
+
+		InputStream bpmnStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(),
+				processDefinition.getResourceName());
+		XMLInputFactory xif = XMLInputFactory.newInstance();
+		InputStreamReader in = new InputStreamReader(bpmnStream, "UTF-8");
+		XMLStreamReader xtr = xif.createXMLStreamReader(in);
+		BpmnModel bpmnModel = new BpmnXMLConverter().convertToBpmnModel(xtr);
+
+		BpmnJsonConverter converter = new BpmnJsonConverter();
+		ObjectNode modelNode = converter.convertToJson(bpmnModel);
+
+		Model model = repositoryService.newModel();
+
+		ObjectNode modelObjectNode = new ObjectMapper().createObjectNode();
+		modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, processDefinition.getName());
+		modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);
+		modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, processDefinition.getDescription());
+
+		model.setKey(processDefinition.getKey());
+		model.setName(processDefinition.getName());
+		// model.setCategory(processDefinition.getDeploymentId());
+		model.setMetaInfo(modelObjectNode.toString());
+		model.setDeploymentId(processDefinition.getDeploymentId());
+
+		repositoryService.saveModel(model);
+		repositoryService.addModelEditorSource(model.getId(), modelNode.toString().getBytes("UTF-8"));
+		System.out.println(model.getId());
 	}
 }
