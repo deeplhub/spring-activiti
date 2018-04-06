@@ -209,7 +209,6 @@ public class ResourceServiceImpl extends ServiceImpl<IResourceDao, Resource> imp
 		List<Resource> trees = new ArrayList<Resource>();
 		for (Resource treeNode : treeNodes) {
 			if (treeNode.getPid() == null) {
-				treeNode.setState("open");
 				trees.add(findChildren(treeNode, treeNodes));
 			}
 		}
@@ -233,15 +232,17 @@ public class ResourceServiceImpl extends ServiceImpl<IResourceDao, Resource> imp
 				if (treeNode.getChildren() == null) {
 					treeNode.setChildren(new ArrayList<Resource>());
 				}
-				//关闭第子级菜单
+				// 关闭子级菜单
 				it.setState("closed");
 				treeNode.getChildren().add(findChildren(it, treeNodes));
 			} else {
-				//打开没有下级的菜单
-				if (it.getChildren() == null) {
+				// 打开没有下级的菜单
+				if (treeNode.getId() != it.getId() && it.getChildren() == null) {
 					it.setState("open");
 				}
 			}
+
+			System.out.println("");
 		}
 		return treeNode;
 	}

@@ -3,7 +3,6 @@ package com.xh.activiti.test.service;
 import java.util.List;
 
 import org.activiti.engine.repository.Model;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -81,7 +80,7 @@ public class ActivitiModelServiceTest {
 	 * @date 2018年3月29日
 	 * 
 	 */
-	@Test
+	// @Test
 	public void queryModelMapList() {
 		List<PageData> list = modelService.selectModelMapList();
 		System.out.println(JSON.toJSON(list));
@@ -127,7 +126,7 @@ public class ActivitiModelServiceTest {
 	 * @date 2018年3月29日
 	 * 
 	 */
-	// @Test
+//	 @Test
 	public void deploy() {
 		String modelId = "85001";
 		boolean falg = modelService.deployModel(modelId);
@@ -142,10 +141,10 @@ public class ActivitiModelServiceTest {
 	 * @date 2018年3月26日
 	 * 
 	 */
-	// @Test
+//	@Test
 	public void deleteDeployment() {
 		// act_re_deployment表的ID
-		String deploymentId = "117501";
+		String deploymentId = "205001";
 		// 删除流程定义，包括启动过的流程
 		boolean flag = deploymentService.deleteDeployment(deploymentId, true);
 		System.out.println("流程删除状态:" + flag);

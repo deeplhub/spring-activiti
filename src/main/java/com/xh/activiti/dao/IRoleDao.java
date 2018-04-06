@@ -14,7 +14,7 @@ import com.xh.activiti.model.Role;
  * @QQ 1033542070
  * @date 2018年3月14日
  */
-public interface IRoleDao extends BaseMapper<Role>{
+public interface IRoleDao extends BaseMapper<Role> {
 
 	/**
 	 * <p>Title: 根据用户与角色中间表的角色ID查询资源管理列表</p>
@@ -39,4 +39,16 @@ public interface IRoleDao extends BaseMapper<Role>{
 	 * @return
 	 */
 	List<Resource> selectResourceListByRoleId(Long id);
+
+	/**
+	 * <p>Title: 根据用户ID查询用户角色列表</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月6日
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	List<String> selectRoleListByUserId(Long userId);
 }

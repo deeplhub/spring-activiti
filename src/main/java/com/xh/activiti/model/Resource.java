@@ -233,4 +233,11 @@ public class Resource {
 		this.state = state;
 	}
 
+	@Override
+	public String toString() {
+		return "Resource [id=" + id + ", name=" + name + ", url=" + url + ", openMode=" + openMode + ", description=" + description
+				+ ", icon=" + icon + ", pid=" + pid + ", seq=" + seq + ", status=" + status + ", opened=" + opened + ", resourceType="
+				+ resourceType + ", createTime=" + createTime + ", children=" + children + ", state=" + state + "]";
+	}
+
 }

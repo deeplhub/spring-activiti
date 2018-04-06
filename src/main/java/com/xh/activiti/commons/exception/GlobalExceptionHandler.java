@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public Result handleResultException(RuntimeException e) {
 		System.out.println("RuntimeException: " + e.getMessage());
-		return Result.exception(500, e.getMessage());
+		return Result.exception(500, "操作异常", e.getMessage());
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public Result handleResultException(Exception e) {
 		System.out.println("Exception: " + e.getMessage());
-		return Result.exception(500, e.getMessage());
+		return Result.exception(500, "操作异常", e.getMessage());
 	}
 
 }

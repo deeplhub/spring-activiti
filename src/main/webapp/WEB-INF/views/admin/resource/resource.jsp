@@ -3,7 +3,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>首页</title>
+<title>资源管理</title>
 <%@ include file="/commons/base.jsp"%>
 <script type="text/javascript">
 	$(function () {
@@ -29,21 +29,6 @@
 		
 	});
 	
-	function opened(value, row, index) {
-		return (value == 1) ? "打开" : "关闭";
-	}
-	function formatterDate(value, row, index) {
-		return TimeObjectUtil.longMsTimeConvertToDateTime(value);
-	}
-	
-	function status(value, row, index) {
-		return (value == 0) ? "正常" : "停用";
-	}
-	function resourceType(value, row, index) {
-		return (value == 0) ? "菜单" : "按钮";
-	}
-
-	
 	function edit(flag) {
 		var row = $('#treeGrid').datagrid('getSelected');
 		if(row){
@@ -57,7 +42,7 @@
 				$('#formId').form('load', row);
 				$("#keyId").val(row.id);
 				
-				baseUrl = "/admin/resource/edit";
+				setting.url = "/admin/resource/edit";
 				return true;
 			}
 			//添加子级
@@ -69,7 +54,7 @@
 			
 			$('#editDialog').dialog('open').dialog('setTitle', '添加');
 			
-			baseUrl = "/admin/resource/add";
+			setting.url = "/admin/resource/add";
 			return true;
 		}
 		//添加
@@ -81,7 +66,7 @@
 		$('#formId').form('clear');
 		comboboxDefault();
 		
-		baseUrl = "/admin/resource/add";
+		setting.url = "/admin/resource/add";
 	}
 	
 	function comboboxDefault(){

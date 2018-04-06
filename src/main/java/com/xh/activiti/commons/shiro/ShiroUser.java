@@ -17,6 +17,9 @@ public class ShiroUser implements Serializable {
 	private Long id;
 	private final String loginName;
 	private String name;
+	private Long pid;
+	private String pName;
+
 	// 是否管理员
 	private boolean isAdmin;
 	private Set<String> urlSet;
@@ -26,10 +29,12 @@ public class ShiroUser implements Serializable {
 		this.loginName = loginName;
 	}
 
-	public ShiroUser(Long id, String loginName, String name, boolean isAdmin, Set<String> urlSet) {
+	public ShiroUser(Long id, String loginName, String name, Long pid, String pName, boolean isAdmin, Set<String> urlSet) {
 		this.id = id;
 		this.loginName = loginName;
 		this.name = name;
+		this.pid = pid;
+		this.pName = pName;
 		this.isAdmin = isAdmin;
 		this.urlSet = urlSet;
 	}
@@ -48,6 +53,22 @@ public class ShiroUser implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getPid() {
+		return pid;
+	}
+
+	public void setPid(Long pid) {
+		this.pid = pid;
+	}
+
+	public String getpName() {
+		return pName;
+	}
+
+	public void setpName(String pName) {
+		this.pName = pName;
 	}
 
 	public Set<String> getUrlSet() {

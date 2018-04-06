@@ -31,13 +31,6 @@
 
 	});
 
-	function formatterDate(value, row, index) {
-		if(value != null){
-			return TimeObjectUtil.longMsTimeConvertToDateTime(value);
-		}
-		return null;
-	}
-
 	function successCallback(result) {
 		if (result.code == 0) {
 			$("#editDialog").dialog('close');

@@ -22,7 +22,7 @@
       <documentation>整个请假流程结束【不同意】</documentation>
     </endEvent>
     <sequenceFlow id="sid-044FD61E-324A-432F-B4AC-B9B267F82BBE" sourceRef="submitAppId" targetRef="approvalId1"></sequenceFlow>
-    <sequenceFlow name="同意" sourceRef="approvalId1" targetRef="approvalId2">
+    <sequenceFlow id="agreeId1" name="同意" sourceRef="approvalId1" targetRef="approvalId2">
       <documentation>部门经理同意申请</documentation>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${pass=='Yes'}]]></conditionExpression>
     </sequenceFlow>
@@ -67,7 +67,7 @@
         <omgdi:waypoint x="280.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="330.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="" id="BPMNEdge_">
+      <bpmndi:BPMNEdge bpmnElement="agreeId1" id="BPMNEdge_agreeId1">
         <omgdi:waypoint x="430.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="555.0" y="112.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
@@ -78,7 +78,7 @@
         <omgdi:waypoint x="655.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="111.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="655.0" y="112.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="655.0" y="112.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="disagree1" id="BPMNEdge_disagree1">
@@ -86,7 +86,7 @@
         <omgdi:waypoint x="380.0" y="242.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="242.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="380.0" y="152.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="380.0" y="152.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="disagree2" id="BPMNEdge_disagree2">
@@ -94,7 +94,7 @@
         <omgdi:waypoint x="605.0" y="242.0"></omgdi:waypoint>
         <omgdi:waypoint x="515.0" y="242.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="605.0" y="152.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="36.0" x="605.0" y="152.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

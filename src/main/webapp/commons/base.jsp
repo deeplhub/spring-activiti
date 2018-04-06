@@ -43,3 +43,4 @@
 <script type="text/javascript" src="${staticPath }/plugins/easyui/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${staticPath }/plugins/zTree/js/jquery.ztree.all.js"></script>
 <script type="text/javascript" src="${staticPath }/static/js/main.js"></script>
+<script type="text/javascript" src="${staticPath }/static/js/constant.js"></script>

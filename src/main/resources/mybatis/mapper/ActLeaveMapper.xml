@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.activiti.dao.IActLeaveDao">
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id,
+		content,
+		approval_info AS approvalInfo
+		days,
+		remark,
+		state,
+		user_id AS userId,
+		task_id AS taskId,
+		process_instance_id AS processInstanceId,
+		start_date AS startDate,
+		end_date AS endDate,
+		create_date AS createDate
+	</sql>
+	
+	
+	<select id="selectListByProcessInstanceId" parameterType="string" resultType="actLeave">
+		SELECT 
+			l.id,
+			l.content,
+			l.approval_info AS approvalInfo,
+			l.days,
+			l.remark,
+			l.state,
+			l.user_id AS userId,
+			l.task_id AS taskId,
+			l.process_instance_id AS processInstanceId,
+			l.start_date AS startDate,
+			l.end_date AS endDate,
+			l.create_date AS createDate,
+			u.name AS userName
+		FROM 
+			act_leave l
+		LEFT JOIN USER u ON u.id=l.user_id
+		WHERE 
+			l.process_instance_id IN
+			<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	</select>
+
+</mapper>

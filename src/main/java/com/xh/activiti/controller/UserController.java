@@ -107,9 +107,9 @@ public class UserController extends BaseController {
 		}
 		// 更新密码
 		if (StringUtils.isBlank(user.getPassword())) {
-			user = userService.selectById(user.getId());
-			String salt = user.getSalt();
-			String pwd = passwordHash.toHex(user.getPassword(), salt);
+			User resultUser = userService.selectById(user.getId());
+			String salt = resultUser.getSalt();
+			String pwd = passwordHash.toHex(resultUser.getPassword(), salt);
 			user.setPassword(pwd);
 		}else {
 			String salt = StringUtils.getUUId();

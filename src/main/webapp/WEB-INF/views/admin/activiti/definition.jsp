@@ -63,7 +63,6 @@
 				},
 				returnType:"json"
 		};
-		debugger;
 		setting.post(data);
 	}
 

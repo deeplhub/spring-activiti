@@ -27,9 +27,6 @@
 			border: true
 		});
 	});
-	function formatterDate(value, row, index) {
-		return TimeObjectUtil.longMsTimeConvertToDateTime(value);
-	}
 	
 	function edit(flag) {
 		var row = $('#treeGrid').datagrid('getSelected');
@@ -43,7 +40,7 @@
 				$('#formId').form('load', row);
 				$("#keyId").val(row.id);
 				
-				baseUrl = "/admin/organization/edit";
+				setting.url = "/admin/organization/edit";
 			}else{
 				$("#childTitle").addClass("ftitle");
 				$("#childTitle").html(row.name);
@@ -52,7 +49,7 @@
 				$('#editDialog').dialog('open').dialog('setTitle', '添加');
 				$('#formId').form('clear');
 				
-				baseUrl = "/admin/organization/add";
+				setting.url = "/admin/organization/add";
 			}
 		}else{
 			$("#childTitle").removeClass("ftitle");
@@ -62,7 +59,7 @@
 			$('#editDialog').dialog('open').dialog('setTitle', '添加');
 			$('#formId').form('clear');
 			
-			baseUrl = "/admin/organization/add";
+			setting.url = "/admin/organization/add";
 		}
 	}
 	

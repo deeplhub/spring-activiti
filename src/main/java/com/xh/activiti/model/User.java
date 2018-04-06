@@ -42,10 +42,14 @@ public class User {
 	// 是否管理员
 	@TableField(value = "is_admin")
 	private boolean isAdmin;
+	// 父级用户
+	private Long pid;
 	// 创建时间
 	@TableField(value = "create_time")
 	private Date createTime;
 
+	@TableField(exist = false)
+	private String pName;
 	@TableField(exist = false)
 	private String organizationName;
 	@TableField(exist = false)
@@ -217,6 +221,14 @@ public class User {
 		this.isAdmin = isAdmin;
 	}
 
+	public Long getPid() {
+		return pid;
+	}
+
+	public void setPid(Long pid) {
+		this.pid = pid;
+	}
+
 	/**
 	 * 创建时间
 	 */
@@ -229,6 +241,14 @@ public class User {
 	 */
 	public Date getCreateTime() {
 		return createTime;
+	}
+
+	public String getpName() {
+		return pName;
+	}
+
+	public void setpName(String pName) {
+		this.pName = pName;
 	}
 
 	public String getOrganizationName() {

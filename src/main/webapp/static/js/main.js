@@ -105,7 +105,8 @@ function remove(grid, url) {
 	// 获取选中数据
 	var row = $(grid).datagrid('getSelected');
 	if (row) {
-		$.messager.confirm("删除", "您确定删除 [" + row.name + "] 吗?", function(res) {
+		var msg = (typeof(row.name) =="undefined") ? "您确定删除该记录吗?" : "您确定删除 [" + row.name + "] 吗?";
+		$.messager.confirm("删除", msg, function(res) {
 			if (res) {
 				var data = {
 					url : basePath + url,

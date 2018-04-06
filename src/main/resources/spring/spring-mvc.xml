@@ -19,6 +19,8 @@
 	<!-- aspectj aop启用CGliB代理 -->
 	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" />
 
+
+	<!-- com.xh.activiti.commons.activiti此包下的类是用于创建模型和编辑模型时用 -->
 	<!-- 使用Annotation自动注册Bean,扫描@Controller和@ControllerAdvice -->
 	<context:component-scan
 		base-package="com.xh.activiti.controller;
@@ -89,8 +91,8 @@
 		<property name="defaultEncoding" value="utf-8"></property>
 		<!-- 上传文件的最大值,单位为B。5M = 5 * 1024 * 1024 -->
 		<!-- <property name="maxUploadSize" value="104857600"/> -->
-		<property name="maxUploadSize" value="5242880"/>
+		<property name="maxUploadSize" value="5242880" />
 		<!-- 缓存大小 -->
-		<property name="maxInMemorySize" value="40960"/>
+		<property name="maxInMemorySize" value="40960" />
 	</bean>
 </beans>

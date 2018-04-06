@@ -48,27 +48,7 @@
 		});
 	});
 	
-	function formatterDate(value, row, index) {
-		return TimeObjectUtil.longMsTimeConvertToDateTime(value);
-	}
-	
-	function sex(value, row, index) {
-		return (value == 0) ? "男" : "女";
-	}
-	function status(value, row, index) {
-		return (value == 0) ? "正常" : "停用";
-	}
-	function userType(value, row, index) {
-		if (value == 0) {
-			return "管理员";
-		} else if (value == 1) {
-			return "用户";
-		}
-		return "未知类型";
-	}
-	
 	function edit(grid, dialog, formId, keyId, url) {
-		baseUrl = url;
 		var row = $(grid).datagrid('getSelected');
 		if (row && keyId != "") {
 			$(dialog).dialog('open').dialog('setTitle', '修改');
@@ -78,6 +58,7 @@
 			$(dialog).dialog('open').dialog('setTitle', '添加');
 			$(formId).form('clear');
 		}
+		setting.url = url;
 		
 		setting.async.url = basePath + '/admin/organization/tree';
 		setting.check.enable = true;
@@ -197,15 +178,15 @@
 			<input id="keyOrganizationId" name="organizationId" type="hidden"/>
 			<div class="fitem">
 				<label>登陆名：</label>
-				<input name="loginName" class="easyui-validatebox" required>
+				<input name="loginName" class="easyui-validatebox" autocomplete="off" required>
 			</div>
 			<div class="fitem">
 				<label>用户名：</label>
-				<input name="name" class="easyui-validatebox" required>
+				<input name="name" class="easyui-validatebox" autocomplete="off" required>
 			</div>
 			<div id="password-html" class="fitem">
 				<label>密码：</label>
-				<input id="password" type="password" name="password" class="easyui-validatebox" >
+				<input id="password" type="password" name="password" class="easyui-validatebox" autocomplete="off">
 			</div>
 			<div class="fitem">
 				<label>性别：</label>
@@ -217,11 +198,11 @@
 			</div>
 			<div class="fitem">
 				<label>年龄：</label>
-				<input name="age" class="easyui-validatebox" required>
+				<input name="age" class="easyui-validatebox" autocomplete="off" required>
 			</div>
 			<div class="fitem">
 				<label>手机号：</label>
-				<input name="phone" class="easyui-validatebox">
+				<input name="phone" class="easyui-validatebox" autocomplete="off">
 			</div>
 			<div class="fitem">
 				<label>用户类别：</label>
@@ -249,7 +230,7 @@
 		</form>
 	</div>
 	<div id="dlg-buttons" class="hidden-label">
-		<button class="easyui-linkbutton" iconCls="icon-ok" onclick="saveAndUpdate('#formOneId')">保存</button>
+		<button class="easyui-linkbutton" iconCls="icon-ok" onclick="saveAndUpdate('#formOneId');">保存</button>
 		<button class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#editOneDialog').dialog('close')">取消</button>
 	</div>
 	

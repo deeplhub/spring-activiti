@@ -18,6 +18,16 @@ public interface IUserDao extends BaseMapper<User> {
 
 	User selectUserById(Long id);
 
+	/**
+	 * <p>Title: 用户列表</p>
+	 * <p>Description: </p>
+	 * 
+	 * @author H.Yang
+	 * @date 2018年4月4日
+	 * 
+	 * @param page
+	 * @return
+	 */
 	List<User> selectUserPage(Pagination page);
 
 	/**

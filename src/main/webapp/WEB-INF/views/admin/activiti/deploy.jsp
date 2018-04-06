@@ -30,10 +30,6 @@
 		});
 	});
 
-	function formatterDate(value, row, index) {
-		return TimeObjectUtil.longMsTimeConvertToDateTime(value);
-	}
-
 	function successCallback(result) {
 		if (result.code == 0) {
 			$("#editDialog").dialog('close');

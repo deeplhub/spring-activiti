@@ -40,10 +40,6 @@
 		});
 	});
 	
-	function status(value, row, index) {
-		return (value == 0) ? "正常" : "停用";
-	}
-	
 	function successCallback(result){
 		if (result.code == 0) {
 			$("#editOneDialog").dialog('close');

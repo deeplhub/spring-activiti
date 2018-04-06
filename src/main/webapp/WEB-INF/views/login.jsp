@@ -31,9 +31,6 @@
 			密码：<input type="password" name="password" value="test">
 		</p>
 		<p>
-			${_csrf.parameterName}：<input type="text" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		</p>
-		<p>
 			<input type="submit" value="提交">
 		</p>
 	</form>
