@@ -14,6 +14,39 @@ act_ge_*: 通用数据， 用于不同场景下，如存放资源文件。
 
 <br><br>
 
+## 所用到的技术
+spring<br>
+spring mvc<br>
+ehcache<br>
+shiro<br>
+mysql<br>
+mybatis<br>
+myabtis plus<br>
+activiti<br>
+...
+
+<br><br>
+
+
+
+### 查询缓存配置
+1.先在mybatis-config.xml配置中cacheEnabled设为true（默认为true），开启全局缓存。<br>
+2.在映射配置文件中设置局部缓存，设置如果下：<br>
+以下两个标签二选一,第一个可以输出日志,第二个不输出日志 只要在对应的mapper配置文件中加入标签即可。readOnly默认是 false<br>
+```
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+```
+
+缓存diskStore path的参数说明：<br>
+user.home（用户的家目录）<br>
+user.dir（用户当前的工作目录）<br>
+java.io.tmpdir（默认的临时目录）<br>
+ehcache.disk.store.dir（ehcache的配置目录）
+
+<br><br>
+
+
 
 ### 如果项目报错
 
@@ -25,10 +58,14 @@ java.lang.ClassNotFoundException: org.springframework.web.context.ContextLoaderL
 
 <br><br>
 
+
+
 #### 问题解析：
 Maven项目中所有依赖(jdk/jar/classes)关系都被其管理。所以如果确定项目中确实存在该包或文件(org.springframework.web.util.Log4jConfigListener)，那必定是项目没有添加maven依赖所致。
 
 <br><br>
+
+
 
 #### 解决方案： 
 右击项目，选择properties->Deployment Assembly->Add->Java Build Path Entries->Maven Dependencies

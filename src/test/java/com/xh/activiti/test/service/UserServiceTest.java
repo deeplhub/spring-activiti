@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xh.activiti.model.User;
 import com.xh.activiti.service.IUserService;
@@ -52,14 +51,21 @@ public class UserServiceTest {
 	@Test
 	public void findAll() throws InterruptedException {
 		for (int i = 0; i < 10; i++) {
-			System.out.println("#################  " + i + "  ##################");
+			long startTime = System.currentTimeMillis(), //
+					endTime = 0, //
+					totalTime = 0;
 			List<User> list = userService.selectList(null);
+			
+			endTime = System.currentTimeMillis();
+			totalTime = (endTime - startTime);
+
+			System.out.println("###########################################");
 			System.out.println();
-			System.out.println(JSON.toJSON(list));
+			System.out.println("当前编号：" + i);
+			System.out.println("总条数：" + list.size());
+			System.out.println("耗时：" + totalTime);
 			System.out.println();
-			System.out.println();
-			System.out.println("###################################");
-			Thread.sleep(100l);
+			System.out.println("###########################################");
 		}
 	}
 }

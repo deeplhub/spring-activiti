@@ -9,13 +9,15 @@
        http://www.springframework.org/schema/aop/spring-aop.xsd"
 	default-autowire="byName">
 
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<!-- 两者二选其一 -->
+	<!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:config/*.properties</value>
 			</list>
 		</property>
-	</bean>
+	</bean> -->
+	<context:property-placeholder location="classpath:config/db.properties" />
 
 	<!-- aspectj aop启用CGliB代理 -->
 	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" />

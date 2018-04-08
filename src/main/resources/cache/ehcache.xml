@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache updateCheck="false" dynamicConfig="false">
-    <diskStore path="java.io.tmpdir"/>
-    
+   <!-- <diskStore path="java.io.tmpdir"/> -->
+   
+   <diskStore path="D:/Eclipse/cache" />
+   
    <cache name="authorizationCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
