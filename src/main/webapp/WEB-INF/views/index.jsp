@@ -46,7 +46,7 @@ ul.ztree {
 			<div class="head">
 				<table>
 					<tr>
-						<td width="50%" style="font-size: 14px;">如梦技术</td>
+						<td width="50%" style="font-size: 14px;">Activiti</td>
 						<td width="50%" align="right" style="font-size: 12px;">
 							<div class="easyui-panel rtool" data-options="border:false"
 								style="text-align: right; background: #09C; color: white; margin-top: -1px;">
