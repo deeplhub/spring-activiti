@@ -26,7 +26,7 @@ import com.xh.activiti.service.IResourceService;
  * @date 2018年3月15日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class ResourceServiceTest {
 
 	@Autowired

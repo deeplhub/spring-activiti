@@ -41,13 +41,13 @@
 	<!-- 2、Spring整合Mybatis 必须配置的项 1 、配置 SqlSessionFactory 实例 -->
 	<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
 		<!-- 注入数据源 -->
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描Mapping.xml文件 -->
-		<property name="mapperLocations" value="classpath:mybatis/mapper/*.xml"></property>
+		<property name="mapperLocations" value="classpath:mybatis/mapper/*.xml" />
 		<!-- 扫描 entity 包，这样在 mapper 中就可以使用简单类名，多个用 ; 隔开 -->
-		<property name="typeAliasesPackage" value="com.xh.activiti.model"></property>
+		<property name="typeAliasesPackage" value="com.xh.activiti.model" />
 		<!-- 配置 MyBatis 全局配置文件(可省略) -->
-		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
 		<!-- 插件配置，例如：分页插件(可省略) -->
 		<property name="plugins">
 			<array>
@@ -68,12 +68,12 @@
 	<!-- 3、MyBatis动态实现, 扫描DAO层,必须配置的项 2，可以不配置 id -->
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<!-- 指定要被扫描的 Dao接口 -->
-		<property name="basePackage" value="com.xh.activiti.dao"></property>
+		<property name="basePackage" value="com.xh.activiti.dao" />
 	</bean>
 
 	<!-- 4、事务管理 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<!-- 5、事务注解 -->

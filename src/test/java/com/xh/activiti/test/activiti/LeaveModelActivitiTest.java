@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * @date 2018年3月28日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class LeaveModelActivitiTest {
 
 	@Autowired

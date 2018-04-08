@@ -18,7 +18,7 @@ import com.xh.activiti.service.ITaskService;
  * @date 2018年4月6日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class TaskServiceTest {
 
 	@Autowired

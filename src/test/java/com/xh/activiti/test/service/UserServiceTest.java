@@ -2,11 +2,13 @@ package com.xh.activiti.test.service;
 
 import java.util.List;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xh.activiti.model.User;
 import com.xh.activiti.service.IUserService;
@@ -20,7 +22,7 @@ import com.xh.activiti.service.IUserService;
  * @date 2018年3月14日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class UserServiceTest {
 
 	@Autowired
@@ -47,8 +49,17 @@ public class UserServiceTest {
 		}
 	}
 
-	// @Test
-	public void selectCount() {
-		// userService.selectCount(3l);
+	@Test
+	public void findAll() throws InterruptedException {
+		for (int i = 0; i < 10; i++) {
+			System.out.println("#################  " + i + "  ##################");
+			List<User> list = userService.selectList(null);
+			System.out.println();
+			System.out.println(JSON.toJSON(list));
+			System.out.println();
+			System.out.println();
+			System.out.println("###################################");
+			Thread.sleep(100l);
+		}
 	}
 }

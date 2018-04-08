@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @date 2018年3月26日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class HelloWordActivitiTest {
 
 	private static ProcessEngine processEngine = null;

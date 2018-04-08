@@ -26,7 +26,7 @@ import com.xh.activiti.service.IUserService;
  * @date 2018年4月3日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class ActLeaveServiceTest {
 
 	@Autowired

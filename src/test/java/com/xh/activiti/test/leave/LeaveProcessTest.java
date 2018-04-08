@@ -33,7 +33,7 @@ import com.xh.activiti.service.IActLeaveService;
  * @date 2018年4月5日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/spring-config.xml" })
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class LeaveProcessTest {
 
 	@Autowired

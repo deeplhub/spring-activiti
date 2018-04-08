@@ -36,6 +36,19 @@
 	</properties>
 
 	<dependencies>
+		<!--日志 -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- activiti -->
 		<dependency>
 			<groupId>org.activiti</groupId>
@@ -194,19 +207,6 @@
 			<version>${fastjson.version}</version>
 		</dependency>
 
-		<!--日志 -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>test</scope>
-		</dependency>
-
 		<!--Mybatis核心包 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -298,17 +298,6 @@
 			<version>${jackson.version}</version>
 		</dependency>
 
-		<!-- 配置redis数据和客户端jar -->
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-redis</artifactId>
-			<version>${redis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>${redis.clients.version}</version>
-		</dependency>
 	</dependencies>
 
 	<build>
