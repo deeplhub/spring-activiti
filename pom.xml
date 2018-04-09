@@ -21,8 +21,12 @@
 		<fastjson.version>1.2.46</fastjson.version>
 		<ehcache.version>2.6.11</ehcache.version>
 		<shiro.version>1.4.0</shiro.version>
-		<log4j.version>1.2.17</log4j.version>
+		<!-- log4j日志引用 -->
+		<!-- <log4j.version>1.2.17</log4j.version>-->
+		<!-- <slf4j.version>1.7.25</slf4j.version> -->
+		<!-- 使用slf4j和logback作为日志 -->
 		<slf4j.version>1.7.25</slf4j.version>
+		<logback.version>1.2.3</logback.version>
 		<activiti.version>5.22.0</activiti.version>
 		<servlet.version>3.1.0</servlet.version>
 		<jackson.version>2.9.0</jackson.version>
@@ -187,17 +191,34 @@
 			<version>${shiro.version}</version>
 		</dependency>
 
-		<!--日志 -->
-		<dependency>
+		<!-- log4j日志 -->
+		<!-- <dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
+		</dependency> -->
+		<!-- <dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>test</scope>
+		</dependency> -->
+		
+		<!-- 使用slf4j和logback作为日志 -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>log4j-over-slf4j</artifactId>
+		    <version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<!-- activiti -->

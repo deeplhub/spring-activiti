@@ -47,14 +47,57 @@ ehcache.disk.store.dir（ehcache的配置目录）
 <br><br>
 
 
+### 项目日志功能注意
+
+在项目中分另引入了log4j.properties和logback.xml，下面我们谈一下这两种的区别：<br>
+如果引用了log4j.properties式的日志功能，那么当加入activiti工作流的，发布项目时是不会打印日志的，但在测试下可以打印日志功能。<br>
+如果引用的logback.xml日志功能，在配置有activiti工作流发布时就可以打印日志。<br>
+
+<br>
+
+根据个人总结所得，这是因为activiti所配置的日志功能是logback.xml。<br>
+
+使用log4j.properties做为日志要引入以下jar:
+- log4j.jar
+- slf4j-log4j12.jar
+
+另个还要web.xml中配置，配置如下：
+```
+<context-param>
+	<param-name>log4jConfigLocation</param-name>
+	<param-value>classpath:log4j.properties</param-value>
+</context-param>
+<listener>
+	<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+</listener>
+```
+
+<br>
+
+使用logback.xml做为日志要引入以下jar:
+- slf4j-api.jar
+- log4j-over-slf4j.jar
+- logback-classic.jar
+- logback-core.jar
+
+在maven中引入log4j-over-slf4j.jar会自动引入slf4j-api.jar<br>
+使用logback日志无须在web.xml中配置。<br>
+logback-classic不能与slf4j-log4j12同引，会导致jar冲突。
+
+
+<br><br>
+
 
 ### 如果项目报错
 
+```
 java.lang.ClassNotFoundException: org.springframework.web.util.Log4jConfigListener
-<br>
+
 或
-<br>
+
 java.lang.ClassNotFoundException: org.springframework.web.context.ContextLoaderListener
+
+```
 
 <br><br>
 
