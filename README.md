@@ -55,7 +55,8 @@ ehcache.disk.store.dir（ehcache的配置目录）
 
 <br>
 
-根据个人总结所得，这是因为activiti所配置的日志功能是logback.xml。<br>
+根据个人总结所得：因为Activiti工作流用到的日志是SLF4j，而并非LOG4J。一方面因为Logback-classic非常自然实现了SLF4j，另一方面SLF4j自动重新加载配置文件当配置文件修改了，Logback-classic能自动重新加载配置文件等。(如有新的见解请留言分享)
+<br>
 
 使用log4j.properties做为日志要引入以下jar:
 - log4j.jar
